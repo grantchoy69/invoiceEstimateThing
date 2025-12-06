@@ -72,10 +72,25 @@
     }
 
     .header-block {
-      margin-bottom: 16px;
-      padding-bottom: 10px;
-      border-bottom: 2px solid #ddd;
-    }
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ddd;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.header-text {
+  flex: 1;
+}
+
+.header-logo {
+  max-width: 120px;  /* tweak until it feels right */
+  height: auto;
+}
+
 
     .contact-info {
       font-size: 0.85rem;
@@ -152,18 +167,23 @@
     }
 
     @media print {
-      body { background: #fff; }
-      .editor { display: none; }
-      .preview {
-        box-shadow: none;
-        padding: 0;
-      }
-      .estimate-container {
-        max-width: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    }
+  body { background: #fff; }
+  .editor { display: none; }
+  .preview {
+    box-shadow: none;
+    padding: 0;
+  }
+  .estimate-container {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .header-logo {
+    filter: grayscale(100%);
+    max-width: 90px;  /* slightly smaller for print */
+  }
+}
+
   </style>
 </head>
 <body>
@@ -257,14 +277,17 @@
       // Build HTML
       let html = "";
       html += '<div class="estimate-container">';
-      html += '  <div class="header-block">';
-      html += '    <h1>Handyman Grant LLC</h1>';
-      html += '    <div class="contact-info">';
-      html += '      <strong>Phone:</strong> (760) 523-8688<br>';
-      html += '      <strong>Email:</strong> handyman@grantchoy.com<br>';
-      html += '      <strong>Service Area:</strong> Greater San Diego County';
-      html += '    </div>';
-      html += '  </div>';
+html += '  <div class="header-block">';
+html += '    <div class="header-text">';
+html += '      <h1>Handyman Grant LLC</h1>';
+html += '      <div class="contact-info">';
+html += '        <strong>Phone:</strong> (760) 523-8688<br>';
+html += '        <strong>Email:</strong> handyman@grantchoy.com<br>';
+html += '        <strong>Service Area:</strong> Greater San Diego County';
+html += '      </div>';
+html += '    </div>';
+html += '    <img src="logoFinal.png" alt="Handyman Grant LLC logo" class="header-logo">';
+html += '  </div>';
 
       html += '  <h2>' + (data.jobTitle || "Estimate") +
               ' <span class="badge">Estimate</span></h2>';
