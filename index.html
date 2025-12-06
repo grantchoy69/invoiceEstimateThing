@@ -17,18 +17,33 @@
     }
 
     @media (min-width: 900px) {
-      .layout { flex-direction: row; align-items: flex-start; }
+      .layout {
+        flex-direction: row;
+        align-items: flex-start;
+      }
     }
 
-    .editor, .preview {
+    .editor-column {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .editor {
       background: #fff;
       padding: 12px 14px;
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     }
 
-    .editor { flex: 1; }
-    .preview { flex: 2; }
+    .preview {
+      background: #fff;
+      padding: 12px 14px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      flex: 2;
+    }
 
     textarea {
       width: 100%;
@@ -72,25 +87,24 @@
     }
 
     .header-block {
-  margin-bottom: 16px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #ddd;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #ddd;
 
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-}
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
 
-.header-text {
-  flex: 1;
-}
+    .header-text {
+      flex: 1;
+    }
 
-.header-logo {
-  max-width: 120px;  /* tweak until it feels right */
-  height: auto;
-}
-
+    .header-logo {
+      max-width: 120px;  /* tweak until it feels right */
+      height: auto;
+    }
 
     .contact-info {
       font-size: 0.85rem;
@@ -166,35 +180,112 @@
       font-weight: 700;
     }
 
-    @media print {
-  body { background: #fff; }
-  .editor { display: none; }
-  .preview {
-    box-shadow: none;
-    padding: 0;
-  }
-  .estimate-container {
-    max-width: 100%;
-    margin: 0;
-    padding: 0;
-  }
-  .header-logo {
-    filter: grayscale(100%);
-    max-width: 90px;  /* slightly smaller for print */
-  }
-}
+    .meta-row {
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      color: #444;
+    }
 
+    .meta-row span {
+      margin-right: 16px;
+    }
+
+    .terms-box {
+      background: #fafafa;
+      border-radius: 8px;
+      padding: 8px 10px;
+      border: 1px solid #ddd;
+      font-size: 0.85rem;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    .client-block {
+      margin-bottom: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: #f7f7f9;
+      border: 1px solid #e0e0e5;
+      font-size: 0.9rem;
+    }
+
+    .client-block p {
+      margin: 2px 0;
+    }
+
+    .doc-type-banner {
+      margin: 8px 0 10px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      display: inline-block;
+    }
+
+    .doc-type-estimate {
+      background: #e5f4ff;
+      color: #085a9b;
+      border: 1px solid #b7d8f5;
+    }
+
+    .doc-type-invoice {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffe08a;
+    }
+
+    .doc-type-toggle {
+      margin-top: 6px;
+      font-size: 0.85rem;
+      color: #555;
+    }
+
+    .doc-type-toggle label {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .doc-type-toggle select {
+      width: 100%;
+      padding: 4px 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 0.85rem;
+      background: #fafafa;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .editor { display: none; }
+      .preview {
+        box-shadow: none;
+        padding: 0;
+      }
+      .estimate-container {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .header-logo {
+        filter: grayscale(100%);
+        max-width: 90px;  /* slightly smaller for print */
+      }
+    }
   </style>
 </head>
 <body>
   <div class="layout">
-    <div class="editor">
-      <h3>Estimate JSON</h3>
-      <p style="font-size:0.8rem; color:#555;">
-        Paste your full-format JSON here and tap <strong>Render</strong>. Then print the preview.
-      </p>
-      <textarea id="jsonInput" spellcheck="false">
+    <div class="editor-column">
+      <div class="editor">
+        <h3>Estimate JSON</h3>
+        <p style="font-size:0.8rem; color:#555;">
+          Paste your full-format JSON here and tap <strong>Render</strong>. Then print the preview.
+        </p>
+        <textarea id="jsonInput" spellcheck="false">
 {
+  "jobId": "136",
   "jobTitle": "Solar Pool Panel Relocation",
   "jobCategory": "Plumbing & Roof Work",
   "jobDescription": "Relocate existing solar pool heating panels from upper roof section to lower roof section. Disconnect and reroute PVC, secure panels, seal penetrations, and test system.",
@@ -218,9 +309,37 @@
   "recommendedPrice": 925,
   "notes": "Labor reflects approximately 4.5 hours on site, with real-world duration around 5–7 hours depending on conditions."
 }
-      </textarea>
-      <button onclick="renderEstimate()">Render</button>
-      <div id="errorBox" class="error"></div>
+        </textarea>
+      </div>
+
+      <div class="editor">
+        <h3>Customer JSON (optional)</h3>
+        <p style="font-size:0.8rem; color:#555;">
+          Paste customer details here to show on the estimate (name, address, etc.).
+        </p>
+        <textarea id="jsonCustomer" spellcheck="false">
+{
+  "customerId": "100",
+  "name": "Jane Doe",
+  "address": "123 Main St, San Diego, CA 92101",
+  "jobSite": "Same as address",
+  "phone": "(760) 555-1234",
+  "email": "jane@example.com",
+  "date": "2025-12-05"
+}
+        </textarea>
+
+        <div class="doc-type-toggle">
+          <label for="docType">Document type:</label>
+          <select id="docType">
+            <option value="estimate" selected>Estimate</option>
+            <option value="invoice">Invoice</option>
+          </select>
+        </div>
+
+        <button onclick="renderEstimate()">Render</button>
+        <div id="errorBox" class="error"></div>
+      </div>
     </div>
 
     <div class="preview" id="preview">
@@ -234,18 +353,38 @@
     }
 
     function renderEstimate() {
-      const input = document.getElementById("jsonInput").value;
+      const estInput = document.getElementById("jsonInput").value;
+      const custInput = document.getElementById("jsonCustomer").value;
       const errorBox = document.getElementById("errorBox");
       const preview = document.getElementById("preview");
+      const docTypeElem = document.getElementById("docType");
+      const docType = docTypeElem ? docTypeElem.value : "estimate";
+      const docLabel = (docType === "invoice" ? "Invoice" : "Estimate");
+      const docBannerClass = (docType === "invoice" ? "doc-type-invoice" : "doc-type-estimate");
+
       errorBox.textContent = "";
 
       let data;
+      let custData = {};
+
+      // Parse estimate JSON
       try {
-        data = JSON.parse(input);
+        data = JSON.parse(estInput);
       } catch (e) {
-        errorBox.textContent = "JSON error: " + e.message;
+        errorBox.textContent = "Estimate JSON error: " + e.message;
         preview.innerHTML = "";
         return;
+      }
+
+      // Parse customer JSON (optional)
+      if (custInput.trim()) {
+        try {
+          custData = JSON.parse(custInput);
+        } catch (e) {
+          errorBox.textContent = "Customer JSON error: " + e.message;
+          preview.innerHTML = "";
+          return;
+        }
       }
 
       const mats = data.materials || [];
@@ -274,23 +413,71 @@
       const costBasis = matTotal + laborTotal + adjTotal;
       const recommended = data.recommendedPrice || costBasis;
 
-      // Build HTML
       let html = "";
       html += '<div class="estimate-container">';
-html += '  <div class="header-block">';
-html += '    <div class="header-text">';
-html += '      <h1>Handyman Grant LLC</h1>';
-html += '      <div class="contact-info">';
-html += '        <strong>Phone:</strong> (760) 523-8688<br>';
-html += '        <strong>Email:</strong> handyman@grantchoy.com<br>';
-html += '        <strong>Service Area:</strong> Greater San Diego County';
-html += '      </div>';
-html += '    </div>';
-html += '    <img src="logoFinal.png" alt="Handyman Grant LLC logo" class="header-logo">';
-html += '  </div>';
+      html += '  <div class="header-block">';
+      html += '    <div class="header-text">';
+      html += '      <h1>Handyman Grant LLC</h1>';
+      html += '      <div class="contact-info">';
+      html += '        <strong>Phone:</strong> (760) 523-8688<br>';
+      html += '        <strong>Email:</strong> handyman@grantchoy.com<br>';
+      html += '        <strong>Service Area:</strong> Greater San Diego County';
+      html += '      </div>';
+      html += '    </div>';
+      html += '    <img src="logoFinal.png" alt="Handyman Grant LLC logo" class="header-logo">';
+      html += '  </div>';
 
-      html += '  <h2>' + (data.jobTitle || "Estimate") +
-              ' <span class="badge">Estimate</span></h2>';
+      // Client block (only if any fields are present)
+      if (
+        custData.name ||
+        custData.address ||
+        custData.jobSite ||
+        custData.phone ||
+        custData.email ||
+        custData.date
+      ) {
+        html += '  <div class="client-block">';
+        if (custData.name) {
+          html += '    <p><strong>Client:</strong> ' + custData.name + '</p>';
+        }
+        if (custData.address) {
+          html += '    <p><strong>Billing Address:</strong> ' + custData.address + '</p>';
+        }
+        if (custData.jobSite) {
+          html += '    <p><strong>Job Site:</strong> ' + custData.jobSite + '</p>';
+        }
+        if (custData.phone) {
+          html += '    <p><strong>Phone:</strong> ' + custData.phone + '</p>';
+        }
+        if (custData.email) {
+          html += '    <p><strong>Email:</strong> ' + custData.email + '</p>';
+        }
+        if (custData.date) {
+          html += '    <p><strong>Date:</strong> ' + custData.date + '</p>';
+        }
+        html += '  </div>';
+      }
+
+      // Meta row: jobId / customerId / date
+      if (data.jobId || custData.customerId || custData.date) {
+        html += '  <div class="meta-row">';
+        if (data.jobId) {
+          html += '    <span><strong>Estimate ID:</strong> ' + data.jobId + '</span>';
+        }
+        if (custData.customerId) {
+          html += '    <span><strong>Customer ID:</strong> ' + custData.customerId + '</span>';
+        }
+        if (custData.date) {
+          html += '    <span><strong>Date:</strong> ' + custData.date + '</span>';
+        }
+        html += '  </div>';
+      }
+
+      // Big document type banner
+      html += '  <div class="doc-type-banner ' + docBannerClass + '">' + docLabel.toUpperCase() + '</div>';
+
+      html += '  <h2>' + (data.jobTitle || docLabel) +
+              ' <span class="badge">' + docLabel + '</span></h2>';
       if (data.jobCategory) {
         html += '  <p><strong>Category:</strong> ' + data.jobCategory + '</p>';
       }
@@ -366,6 +553,21 @@ html += '  </div>';
         html += '  <div class="section-title">Notes</div>';
         html += '  <div class="notes-box">' + data.notes + '</div>';
       }
+
+      html += '  <div class="section-title">Terms &amp; Conditions</div>';
+      html += '  <div class="terms-box">';
+      html += '    <p>Thank you for choosing Handyman Grant LLC!</p>';
+      html += '    <p>Estimate is valid for 14 days from the date issued.</p>';
+      html += '    <p>Pricing applies only to the work and materials listed above.</p>';
+      html += '    <p>Hidden or unforeseen conditions may require additional labor or materials at added cost.</p>';
+      html += '    <p>Payment is due upon completion unless otherwise agreed in writing.</p>';
+      html += '    <p>Invoices not paid within 14 days of payment terms may incur a late fee of 5% per 14-day period the balance remains unpaid.</p>';
+      html += '    <p>Labor is warrantied for 30 days. Materials are covered by manufacturer warranties when applicable.</p>';
+      html += '    <p>Customer is responsible for providing access to work areas and functional utilities.</p>';
+      html += '    <p>Permits and related fees are the customer&apos;s responsibility unless otherwise specified.</p>';
+      html += '    <p>Large debris, appliances, or special disposal needs may incur additional fees.</p>';
+      html += '    <p>Cancellation within 24 hours of scheduled work may incur a fee.</p>';
+      html += '  </div>';
 
       html += '</div>';
 
