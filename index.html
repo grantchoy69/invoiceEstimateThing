@@ -282,6 +282,7 @@
 <body>
   <div class="layout">
     <div class="editor-column">
+      <!-- Estimate JSON -->
       <div class="editor">
         <h3>Estimate JSON</h3>
         <p style="font-size:0.8rem; color:#555;">
@@ -316,6 +317,7 @@
         </textarea>
       </div>
 
+      <!-- Customer JSON -->
       <div class="editor">
         <h3>Customer JSON (optional)</h3>
         <p style="font-size:0.8rem; color:#555;">
@@ -345,6 +347,7 @@
         <div id="errorBox" class="error"></div>
       </div>
 
+      <!-- Combined JSON input from DB (optional future) -->
       <div class="editor">
         <h3>Combined JSON (from database)</h3>
         <p style="font-size:0.8rem; color:#555;">
@@ -378,8 +381,29 @@
         </textarea>
         <button onclick="loadCombined()">Load from Combined JSON</button>
       </div>
+
+      <!-- Job JSON for DB -->
+      <div class="editor">
+        <h3>Job for Database (jobs)</h3>
+        <p style="font-size:0.8rem; color:#555;">
+          After you click <strong>Render</strong>, this fills with a single JSON object
+          you can import into the <code>jobs</code> table.
+        </p>
+        <textarea id="jobForDb" class="small-textarea" spellcheck="false" readonly></textarea>
+      </div>
+
+      <!-- Materials JSON for DB -->
+      <div class="editor">
+        <h3>Materials for Database (jobMaterials)</h3>
+        <p style="font-size:0.8rem; color:#555;">
+          After you click <strong>Render</strong>, this fills with a JSON array
+          you can import into the <code>jobMaterials</code> table.
+        </p>
+        <textarea id="materialsForDb" class="small-textarea" spellcheck="false" readonly></textarea>
+      </div>
     </div>
 
+    <!-- Preview -->
     <div class="preview" id="preview">
       <!-- Rendered estimate goes here -->
     </div>
@@ -628,6 +652,46 @@
 
       html += '</div>';
 
+      // --- Job JSON for DB (jobs table) ---
+      const jobForDb = {
+        jobId: data.jobId || "",
+        customerId: custData.customerId || null,
+        jobTitle: data.jobTitle || "",
+        jobCategory: data.jobCategory || "",
+        jobDescription: data.jobDescription || "",
+        status: "quoted",
+        recommendedPrice: recommended,
+        invoiceAmount: null,
+        paidAmount: null,
+        jobNotes: data.notes || "",
+        jobDate: custData.date || null
+      };
+
+      const jobBox = document.getElementById("jobForDb");
+      if (jobBox) {
+        jobBox.value = JSON.stringify(jobForDb, null, 2);
+      }
+
+      // --- Materials JSON for DB (jobMaterials table) ---
+      const matsForDb = mats.map(m => ({
+        jobId: data.jobId || "",
+        item: m.item || "",
+        qty: m.qty || 0,
+        unitCost: m.unitCost || 0,
+        lineTotal:
+          m._lineTotal != null
+            ? m._lineTotal
+            : ((m.qty || 0) * (m.unitCost || 0))
+      }));
+
+      const matsBox = document.getElementById("materialsForDb");
+      if (matsBox) {
+        matsBox.value = matsForDb.length
+          ? JSON.stringify(matsForDb, null, 2)
+          : "[]";
+      }
+
+      // finally, render the HTML preview
       preview.innerHTML = html;
     }
 
