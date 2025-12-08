@@ -56,6 +56,10 @@
       resize: vertical;
     }
 
+    .small-textarea {
+      min-height: 120px;
+    }
+
     button {
       margin-top: 8px;
       padding: 8px 12px;
@@ -102,7 +106,7 @@
     }
 
     .header-logo {
-      max-width: 120px;  /* tweak until it feels right */
+      max-width: 120px;
       height: auto;
     }
 
@@ -270,7 +274,7 @@
       }
       .header-logo {
         filter: grayscale(100%);
-        max-width: 90px;  /* slightly smaller for print */
+        max-width: 90px;
       }
     }
   </style>
@@ -340,6 +344,40 @@
         <button onclick="renderEstimate()">Render</button>
         <div id="errorBox" class="error"></div>
       </div>
+
+      <div class="editor">
+        <h3>Combined JSON (from database)</h3>
+        <p style="font-size:0.8rem; color:#555;">
+          When exporting from your database, use a combined JSON object with
+          <code>estimateJson</code> and <code>customerJson</code> fields, and paste it here.
+          Then tap the button to load both boxes above.
+        </p>
+        <textarea id="combinedInput" class="small-textarea" spellcheck="false">
+{
+  "estimateJson": {
+    "jobId": "136",
+    "jobTitle": "Example Job",
+    "jobCategory": "Example Category",
+    "jobDescription": "Example combined export.",
+    "materials": [],
+    "labor": [],
+    "flatAdjustments": [],
+    "recommendedPrice": 0,
+    "notes": ""
+  },
+  "customerJson": {
+    "customerId": "100",
+    "name": "Example Customer",
+    "address": "123 Example St, City, ST 00000",
+    "jobSite": "Same as address",
+    "phone": "",
+    "email": "",
+    "date": "2025-12-05"
+  }
+}
+        </textarea>
+        <button onclick="loadCombined()">Load from Combined JSON</button>
+      </div>
     </div>
 
     <div class="preview" id="preview">
@@ -350,6 +388,30 @@
   <script>
     function currency(n) {
       return "$" + n.toFixed(2);
+    }
+
+    function loadCombined() {
+      const raw = document.getElementById("combinedInput").value;
+      const errorBox = document.getElementById("errorBox");
+      errorBox.textContent = "";
+
+      try {
+        const combined = JSON.parse(raw);
+
+        if (!combined.estimateJson || !combined.customerJson) {
+          throw new Error("Combined JSON must have 'estimateJson' and 'customerJson' fields.");
+        }
+
+        document.getElementById("jsonInput").value =
+          JSON.stringify(combined.estimateJson, null, 2);
+
+        document.getElementById("jsonCustomer").value =
+          JSON.stringify(combined.customerJson, null, 2);
+
+        renderEstimate();
+      } catch (e) {
+        errorBox.textContent = "Combined JSON error: " + e.message;
+      }
     }
 
     function renderEstimate() {
@@ -367,7 +429,6 @@
       let data;
       let custData = {};
 
-      // Parse estimate JSON
       try {
         data = JSON.parse(estInput);
       } catch (e) {
@@ -376,7 +437,6 @@
         return;
       }
 
-      // Parse customer JSON (optional)
       if (custInput.trim()) {
         try {
           custData = JSON.parse(custInput);
@@ -427,7 +487,6 @@
       html += '    <img src="logoFinal.png" alt="Handyman Grant LLC logo" class="header-logo">';
       html += '  </div>';
 
-      // Client block (only if any fields are present)
       if (
         custData.name ||
         custData.address ||
@@ -458,7 +517,6 @@
         html += '  </div>';
       }
 
-      // Meta row: jobId / customerId / date
       if (data.jobId || custData.customerId || custData.date) {
         html += '  <div class="meta-row">';
         if (data.jobId) {
@@ -473,7 +531,6 @@
         html += '  </div>';
       }
 
-      // Big document type banner
       html += '  <div class="doc-type-banner ' + docBannerClass + '">' + docLabel.toUpperCase() + '</div>';
 
       html += '  <h2>' + (data.jobTitle || docLabel) +
@@ -574,7 +631,6 @@
       preview.innerHTML = html;
     }
 
-    // Auto-render on load with sample JSON
     window.addEventListener("load", renderEstimate);
   </script>
 </body>
