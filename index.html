@@ -276,6 +276,7 @@
         filter: grayscale(100%);
         max-width: 90px;
       }
+      #signatureToggleRow {display: none;}
     }
   </style>
 </head>
@@ -346,6 +347,14 @@
         <button onclick="renderEstimate()">Render</button>
         <div id="errorBox" class="error"></div>
       </div>
+      <div id="signatureToggleRow">
+  <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+    <input type="checkbox" id="showSignatureToggle" checked>
+    Include signature line
+  </label>
+</div>
+
+
 
       <!-- Combined JSON input from DB (optional future) -->
       <div class="editor">
@@ -413,6 +422,11 @@
     function currency(n) {
       return "$" + n.toFixed(2);
     }
+    const paymentTerms =
+  (custData && typeof custData.paymentTerms === "string" && custData.paymentTerms.trim().length > 0)
+    ? custData.paymentTerms.trim()
+    : "Payment on Delivery";
+
 
     function loadCombined() {
       const raw = document.getElementById("combinedInput").value;
@@ -627,8 +641,27 @@
       html += '    <tr><td>Labor subtotal</td><td class="number-cell">' + currency(laborTotal) + '</td></tr>';
       html += '    <tr><td>Flat adjustments</td><td class="number-cell">' + currency(adjTotal) + '</td></tr>';
       html += '    <tr><td><strong>Calculated total (cost basis)</strong></td><td class="number-cell"><strong>' + currency(costBasis) + '</strong></td></tr>';
-      html += '    <tr><td><strong>Recommended customer price</strong></td><td class="number-cell"><strong>' + currency(recommended) + '</strong></td></tr>';
+      html += '    <tr><td><strong>Final Customer Price</strong></td><td class="number-cell"><strong>' + currency(recommended) + '</strong></td></tr>';
       html += '  </tbody></table>';
+
+      if (document.getElementById("showSignatureToggle").checked) {
+  html += `
+    <div id="signatureBlock" style="margin-top:24px;">
+      <hr style="margin-bottom:16px;">
+      <div style="display:flex; justify-content:space-between; gap:24px;">
+        <div style="flex:1;">
+          <div style="border-bottom:1px solid #000; height:24px;"></div>
+          <div style="font-size:12px; margin-top:4px;">Customer Signature</div>
+        </div>
+        <div style="width:160px;">
+          <div style="border-bottom:1px solid #000; height:24px;"></div>
+          <div style="font-size:12px; margin-top:4px;">Date</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 
       if (data.notes) {
         html += '  <div class="section-title">Notes</div>';
@@ -651,6 +684,7 @@
       html += '  </div>';
 
       html += '</div>';
+
 
       // --- Job JSON for DB (jobs table) ---
       const jobForDb = {

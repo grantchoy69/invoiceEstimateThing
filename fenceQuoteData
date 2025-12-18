@@ -1,0 +1,37 @@
+{
+  "jobId": 139,
+  "customerId": 122,
+  "jobTitle": "West Side Fence Replacement",
+  "jobCategory": "Fencing",
+  "jobDescription": "Remove existing deteriorated fence panels on west side of property. Perform selective demolition of concrete as required to access failed posts. Remove and dispose of failed posts and debris. Install new metal fence posts, install new 8-foot fence panels aligned with existing fencing, and paint to match existing finish.",
+  "status": "quoted",
+  "recommendedPrice": 2250,
+  "invoiceAmount": null,
+  "paidAmount": null,
+  "jobNotes": "",
+  "jobDate": null
+}
+
+[
+  {
+    "jobId": 139,
+    "item": "Metal fence posts",
+    "qty": 4,
+    "unitCost": 75,
+    "lineTotal": 300
+  },
+  {
+    "jobId": 139,
+    "item": "8-foot fence panels",
+    "qty": 4,
+    "unitCost": 110,
+    "lineTotal": 440
+  },
+  {
+    "jobId": 139,
+    "item": "Concrete, anchoring materials, and paint",
+    "qty": 1,
+    "unitCost": 180,
+    "lineTotal": 180
+  }
+]
