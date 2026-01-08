@@ -278,6 +278,24 @@
       }
       #signatureToggleRow {display: none;}
     }
+  
+    .toolRow {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .toolRow button {
+      margin-top: 0;
+      padding: 6px 10px;
+      font-size: 0.85rem;
+      background: #444;
+    }
+    .toolRow button:hover {
+      background: #222;
+    }
+
   </style>
 </head>
 <body>
@@ -316,6 +334,9 @@
   "notes": "Labor reflects approximately 4.5 hours on site, with real-world duration around 5–7 hours depending on conditions."
 }
         </textarea>
+        <div class="toolRow">
+          <button type="button" onclick="saveTextareaJson('jsonInput', 'estimateJson')">Save Estimate JSON</button>
+        </div>
       </div>
 
       <!-- Customer JSON -->
@@ -335,6 +356,9 @@
   "date": "2025-12-05"
 }
         </textarea>
+        <div class="toolRow">
+          <button type="button" onclick="saveTextareaJson('jsonCustomer', 'customerJson')">Save Customer JSON</button>
+        </div>
 
         <div class="doc-type-toggle">
           <label for="docType">Document type:</label>
@@ -389,6 +413,9 @@
   }
 }
         </textarea>
+        <div class="toolRow">
+          <button type="button" onclick="saveTextareaJson('combinedInput', 'combinedJson')">Save Combined JSON</button>
+        </div>
         <button onclick="loadCombined()">Load from Combined JSON</button>
       </div>
 
@@ -400,6 +427,9 @@
           you can import into the <code>jobs</code> table.
         </p>
         <textarea id="jobForDb" class="small-textarea" spellcheck="false" readonly></textarea>
+        <div class="toolRow">
+          <button type="button" onclick="saveTextareaJson('jobForDb', 'jobForDatabase')">Save Job JSON</button>
+        </div>
       </div>
 
       <!-- Materials JSON for DB -->
@@ -410,6 +440,9 @@
           you can import into the <code>jobMaterials</code> table.
         </p>
         <textarea id="materialsForDb" class="small-textarea" spellcheck="false" readonly></textarea>
+        <div class="toolRow">
+          <button type="button" onclick="saveTextareaJson('materialsForDb', 'materialsForDatabase')">Save Materials JSON</button>
+        </div>
       </div>
     </div>
 
@@ -425,7 +458,47 @@
     }
 
 
-    function loadCombined() {
+    
+
+
+    function saveTextareaJson(textareaId, fileBase) {
+      const el = document.getElementById(textareaId);
+      if (!el) {
+        alert("Could not find textarea: " + textareaId);
+        return;
+      }
+
+      const text = (el.value || "").trim();
+      if (!text) {
+        alert("Nothing to save yet.");
+        return;
+      }
+
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2, "0");
+      const ts =
+        now.getFullYear() +
+        pad(now.getMonth() + 1) +
+        pad(now.getDate()) + "_" +
+        pad(now.getHours()) +
+        pad(now.getMinutes()) +
+        pad(now.getSeconds());
+
+      const filename = `${fileBase}_${ts}.json`;
+      const blob = new Blob([text], { type: "application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      URL.revokeObjectURL(url);
+    }
+
+function loadCombined() {
       const raw = document.getElementById("combinedInput").value;
       const errorBox = document.getElementById("errorBox");
       errorBox.textContent = "";
