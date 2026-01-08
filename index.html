@@ -345,6 +345,7 @@
         </div>
 
         <button onclick="renderEstimate()">Render</button>
+        <button type="button" onclick="clearAutoSavedDraft()" style="background:#646464;">Clear Draft</button>
         <div id="errorBox" class="error"></div>
       </div>
       <div id="signatureToggleRow">
@@ -422,10 +423,6 @@
     function currency(n) {
       return "$" + n.toFixed(2);
     }
-    const paymentTerms =
-  (custData && typeof custData.paymentTerms === "string" && custData.paymentTerms.trim().length > 0)
-    ? custData.paymentTerms.trim()
-    : "Payment on Delivery";
 
 
     function loadCombined() {
@@ -728,6 +725,94 @@
       // finally, render the HTML preview
       preview.innerHTML = html;
     }
+
+
+    // --- Autosave editor state (localStorage) ---
+    (function () {
+      const storageKey = "invoiceEstimateThing_state_v1";
+
+      const fields = [
+        { key: "estimateJson", elId: "jsonInput", kind: "value" },
+        { key: "customerJson", elId: "jsonCustomer", kind: "value" },
+        { key: "combinedJson", elId: "combinedInput", kind: "value" },
+        { key: "docType", elId: "docType", kind: "value" },
+        { key: "includeSignature", elId: "showSignatureToggle", kind: "checked" }
+      ];
+
+      function readState() {
+        try {
+          const raw = localStorage.getItem(storageKey);
+          return raw ? JSON.parse(raw) : {};
+        } catch (e) {
+          return {};
+        }
+      }
+
+      function writeState(state) {
+        localStorage.setItem(storageKey, JSON.stringify(state));
+      }
+
+      function applyState(state) {
+        fields.forEach(f => {
+          const el = document.getElementById(f.elId);
+          if (!el) return;
+          if (!(f.key in state)) return;
+
+          if (f.kind === "checked") el.checked = !!state[f.key];
+          else el.value = state[f.key] ?? "";
+        });
+      }
+
+      function collectState() {
+        const state = {};
+        fields.forEach(f => {
+          const el = document.getElementById(f.elId);
+          if (!el) return;
+
+          if (f.kind === "checked") state[f.key] = !!el.checked;
+          else state[f.key] = el.value ?? "";
+        });
+        state._savedAt = new Date().toISOString();
+        return state;
+      }
+
+      let saveTimer = null;
+      function scheduleSave() {
+        if (saveTimer) clearTimeout(saveTimer);
+        saveTimer = setTimeout(() => writeState(collectState()), 200);
+      }
+
+      // Expose a clear function for the "Clear Draft" button
+      window.clearAutoSavedDraft = function () {
+        localStorage.removeItem(storageKey);
+
+        fields.forEach(f => {
+          const el = document.getElementById(f.elId);
+          if (!el) return;
+
+          if (f.kind === "checked") el.checked = true; // default: include signature
+          else el.value = "";
+        });
+
+        // Keep the preview in sync with the cleared state
+        try { renderEstimate(); } catch (e) {}
+      };
+
+      // Restore ASAP so the first render uses restored values
+      document.addEventListener("DOMContentLoaded", () => {
+        applyState(readState());
+
+        fields.forEach(f => {
+          const el = document.getElementById(f.elId);
+          if (!el) return;
+
+          const evt = (f.kind === "checked" || el.tagName === "SELECT") ? "change" : "input";
+          el.addEventListener(evt, scheduleSave);
+        });
+
+        scheduleSave();
+      });
+    })();
 
     window.addEventListener("load", renderEstimate);
   </script>
