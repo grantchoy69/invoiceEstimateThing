@@ -17,10 +17,7 @@
     }
 
     @media (min-width: 900px) {
-      .layout {
-        flex-direction: row;
-        align-items: flex-start;
-      }
+      .layout { flex-direction: row; align-items: flex-start; }
     }
 
     .editor-column {
@@ -30,20 +27,14 @@
       flex: 1;
     }
 
-    .editor {
+    .editor, .preview {
       background: #fff;
       padding: 12px 14px;
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     }
 
-    .preview {
-      background: #fff;
-      padding: 12px 14px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-      flex: 2;
-    }
+    .preview { flex: 2; }
 
     textarea {
       width: 100%;
@@ -56,9 +47,7 @@
       resize: vertical;
     }
 
-    .small-textarea {
-      min-height: 120px;
-    }
+    .small-textarea { min-height: 120px; }
 
     button {
       margin-top: 8px;
@@ -73,42 +62,43 @@
 
     button:active { transform: translateY(1px); }
 
+    .toolRow {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .toolRow button {
+      margin-top: 0;
+      padding: 6px 10px;
+      font-size: 0.85rem;
+      background: #444;
+    }
+    .toolRow button:hover { background: #222; }
+
     .estimate-container {
       max-width: 800px;
       margin: 0 auto;
       padding: 16px 20px;
     }
 
-    h1 {
-      margin: 0;
-      font-size: 1.6rem;
-      letter-spacing: 0.04em;
-    }
-
-    h2 {
-      margin: 12px 0 4px;
-      font-size: 1.2rem;
-    }
+    h1 { margin: 0; font-size: 1.6rem; letter-spacing: 0.04em; }
+    h2 { margin: 12px 0 4px; font-size: 1.2rem; }
 
     .header-block {
       margin-bottom: 16px;
       padding-bottom: 10px;
       border-bottom: 2px solid #ddd;
-
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
       gap: 12px;
     }
 
-    .header-text {
-      flex: 1;
-    }
-
-    .header-logo {
-      max-width: 120px;
-      height: auto;
-    }
+    .header-text { flex: 1; }
+    .header-logo { max-width: 120px; height: auto; }
 
     .contact-info {
       font-size: 0.85rem;
@@ -173,26 +163,15 @@
       color: #b00020;
     }
 
-    .totals-table td {
-      border: none;
-      padding: 2px 0;
-    }
-
+    .totals-table td { border: none; padding: 2px 0; }
     .totals-table tr:last-child td {
       padding-top: 6px;
       border-top: 1px solid #ccc;
       font-weight: 700;
     }
 
-    .meta-row {
-      margin-bottom: 10px;
-      font-size: 0.9rem;
-      color: #444;
-    }
-
-    .meta-row span {
-      margin-right: 16px;
-    }
+    .meta-row { margin-bottom: 10px; font-size: 0.9rem; color: #444; }
+    .meta-row span { margin-right: 16px; }
 
     .terms-box {
       background: #fafafa;
@@ -213,9 +192,7 @@
       font-size: 0.9rem;
     }
 
-    .client-block p {
-      margin: 2px 0;
-    }
+    .client-block p { margin: 2px 0; }
 
     .doc-type-banner {
       margin: 8px 0 10px;
@@ -246,10 +223,7 @@
       color: #555;
     }
 
-    .doc-type-toggle label {
-      display: block;
-      margin-bottom: 2px;
-    }
+    .doc-type-toggle label { display: block; margin-bottom: 2px; }
 
     .doc-type-toggle select {
       width: 100%;
@@ -260,44 +234,35 @@
       background: #fafafa;
     }
 
+    .past-due-box {
+      display: inline-block;
+      margin-left: 10px;
+      padding: 4px 10px;
+      background: #b00020;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.8rem;
+      border-radius: 4px;
+      letter-spacing: 0.08em;
+    }
+
+    .past-due-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     @media print {
       body { background: #fff; }
       .editor { display: none; }
-      .preview {
-        box-shadow: none;
-        padding: 0;
-      }
-      .estimate-container {
-        max-width: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      .header-logo {
-        filter: grayscale(100%);
-        max-width: 90px;
-      }
-      #signatureToggleRow {display: none;}
+      .preview { box-shadow: none; padding: 0; }
+      .estimate-container { max-width: 100%; margin: 0; padding: 0; }
+      .header-logo { filter: grayscale(100%); max-width: 90px; }
+      #signatureToggleRow { display: none; }
     }
-  
-    .toolRow {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-      margin-top: 8px;
-    }
-    .toolRow button {
-      margin-top: 0;
-      padding: 6px 10px;
-      font-size: 0.85rem;
-      background: #444;
-    }
-    .toolRow button:hover {
-      background: #222;
-    }
-
   </style>
 </head>
+
 <body>
   <div class="layout">
     <div class="editor-column">
@@ -372,16 +337,15 @@
         <button type="button" onclick="clearAutoSavedDraft()" style="background:#646464;">Clear Draft</button>
         <div id="errorBox" class="error"></div>
       </div>
+
       <div id="signatureToggleRow">
-  <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-    <input type="checkbox" id="showSignatureToggle" checked>
-    Include signature line
-  </label>
-</div>
+        <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+          <input type="checkbox" id="showSignatureToggle" checked>
+          Include signature line
+        </label>
+      </div>
 
-
-
-      <!-- Combined JSON input from DB (optional future) -->
+      <!-- Combined JSON input from DB -->
       <div class="editor">
         <h3>Combined JSON (from database)</h3>
         <p style="font-size:0.8rem; color:#555;">
@@ -447,32 +411,61 @@
     </div>
 
     <!-- Preview -->
-    <div class="preview" id="preview">
-      <!-- Rendered estimate goes here -->
-    </div>
+    <div class="preview" id="preview"></div>
   </div>
 
   <script>
-    function currency(n) {
-      return "$" + n.toFixed(2);
+    // --- Business identity / verification (edit these once, prints on every doc) ---
+    const businessInfo = {
+      displayName: "Handyman Grant LLC",
+      legalName: "Handyman Grant LLC",
+      phone: "(760) 523-8688",
+      email: "handyman@grantchoy.com",
+      website: "https://handymangrant.com/",
+      serviceArea: "Greater San Diego County",
+      mailingAddress: "3712 Grim Ave, Apt 4 San Diego, CA",
+      caSosEntityNumber: "Entity No. B20250326728",
+      ein: "39-5153884"
+    };
+
+    function toNumber(x) {
+      const n = Number(x);
+      return Number.isFinite(n) ? n : 0;
     }
 
+    function currency(n) {
+      const v = toNumber(n);
+      return "$" + v.toFixed(2);
+    }
 
-    
+    function htmlEscape(s) {
+      return String(s ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
 
+    // Parse YYYY-MM-DD safely in local time (avoids timezone off-by-1)
+    function parseDateYmd(dateStr) {
+      if (!dateStr) return null;
+      const ymd = String(dateStr).slice(0, 10);
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(ymd)) return null;
+      return new Date(ymd + "T00:00:00");
+    }
+
+    function daysBetween(a, b) {
+      const msInDay = 1000 * 60 * 60 * 24;
+      return (b - a) / msInDay;
+    }
 
     function saveTextareaJson(textareaId, fileBase) {
       const el = document.getElementById(textareaId);
-      if (!el) {
-        alert("Could not find textarea: " + textareaId);
-        return;
-      }
+      if (!el) { alert("Could not find textarea: " + textareaId); return; }
 
       const text = (el.value || "").trim();
-      if (!text) {
-        alert("Nothing to save yet.");
-        return;
-      }
+      if (!text) { alert("Nothing to save yet."); return; }
 
       const now = new Date();
       const pad = (n) => String(n).padStart(2, "0");
@@ -498,24 +491,19 @@
       URL.revokeObjectURL(url);
     }
 
-function loadCombined() {
+    function loadCombined() {
       const raw = document.getElementById("combinedInput").value;
       const errorBox = document.getElementById("errorBox");
       errorBox.textContent = "";
 
       try {
         const combined = JSON.parse(raw);
-
         if (!combined.estimateJson || !combined.customerJson) {
           throw new Error("Combined JSON must have 'estimateJson' and 'customerJson' fields.");
         }
 
-        document.getElementById("jsonInput").value =
-          JSON.stringify(combined.estimateJson, null, 2);
-
-        document.getElementById("jsonCustomer").value =
-          JSON.stringify(combined.customerJson, null, 2);
-
+        document.getElementById("jsonInput").value = JSON.stringify(combined.estimateJson, null, 2);
+        document.getElementById("jsonCustomer").value = JSON.stringify(combined.customerJson, null, 2);
         renderEstimate();
       } catch (e) {
         errorBox.textContent = "Combined JSON error: " + e.message;
@@ -527,6 +515,7 @@ function loadCombined() {
       const custInput = document.getElementById("jsonCustomer").value;
       const errorBox = document.getElementById("errorBox");
       const preview = document.getElementById("preview");
+
       const docTypeElem = document.getElementById("docType");
       const docType = docTypeElem ? docTypeElem.value : "estimate";
       const docLabel = (docType === "invoice" ? "Invoice" : "Estimate");
@@ -555,103 +544,120 @@ function loadCombined() {
         }
       }
 
-      const mats = data.materials || [];
-      const labor = data.labor || [];
-      const adj = data.flatAdjustments || [];
+      // --- Past Due Logic (Invoice only; >14 days since custData.date) ---
+      let isPastDue = false;
+      if (docType === "invoice") {
+        const invoiceDate = parseDateYmd(custData.date);
+        if (invoiceDate) {
+          const now = new Date();
+          const d = daysBetween(invoiceDate, now);
+          if (d > 14) isPastDue = true;
+        }
+      }
+
+      const mats = Array.isArray(data.materials) ? data.materials : [];
+      const labor = Array.isArray(data.labor) ? data.labor : [];
+      const adj = Array.isArray(data.flatAdjustments) ? data.flatAdjustments : [];
 
       let matTotal = 0;
       mats.forEach(m => {
-        const line = (m.qty || 0) * (m.unitCost || 0);
+        const line = toNumber(m.qty) * toNumber(m.unitCost);
         m._lineTotal = line;
         matTotal += line;
       });
 
       let laborTotal = 0;
       labor.forEach(l => {
-        const line = (l.hours || 0) * (l.rate || 0);
+        const line = toNumber(l.hours) * toNumber(l.rate);
         l._lineTotal = line;
         laborTotal += line;
       });
 
       let adjTotal = 0;
-      adj.forEach(a => {
-        adjTotal += (a.amount || 0);
-      });
+      adj.forEach(a => { adjTotal += toNumber(a.amount); });
 
       const costBasis = matTotal + laborTotal + adjTotal;
-      const recommended = data.recommendedPrice || costBasis;
+      const recommended = (data.recommendedPrice != null && data.recommendedPrice !== "")
+        ? toNumber(data.recommendedPrice)
+        : costBasis;
 
       let html = "";
       html += '<div class="estimate-container">';
+
+      // Header
       html += '  <div class="header-block">';
       html += '    <div class="header-text">';
-      html += '      <h1>Handyman Grant LLC</h1>';
+      html += '      <h1>' + htmlEscape(businessInfo.displayName) + '</h1>';
       html += '      <div class="contact-info">';
-      html += '        <strong>Phone:</strong> (760) 523-8688<br>';
-      html += '        <strong>Email:</strong> handyman@grantchoy.com<br>';
-      html += '        <strong>Service Area:</strong> Greater San Diego County';
+      if (businessInfo.mailingAddress) {
+        html += '        <strong>Mailing:</strong> ' + htmlEscape(businessInfo.mailingAddress) + '<br>';
+      }
+      html += '        <strong>Phone:</strong> ' + htmlEscape(businessInfo.phone) + '<br>';
+      html += '        <strong>Email:</strong> ' + htmlEscape(businessInfo.email) + '<br>';
+
+      if (businessInfo.website) {
+        const siteHref = String(businessInfo.website || "");
+        html += '        <strong>Website:</strong> <a href="' + htmlEscape(siteHref) + '" target="_blank" rel="noopener">' + htmlEscape(siteHref) + '</a><br>';
+      }
+      if (businessInfo.caSosEntityNumber) {
+        html += '        <strong>CA SOS Entity #:</strong> ' + htmlEscape(businessInfo.caSosEntityNumber) + '<br>';
+      }
+      if (businessInfo.ein) {
+        html += '        <strong>EIN:</strong> ' + htmlEscape(businessInfo.ein) + '<br>';
+      }
+      html += '        <strong>Service Area:</strong> ' + htmlEscape(businessInfo.serviceArea);
       html += '      </div>';
       html += '    </div>';
-      html += '    <img src="logoFinal.png" alt="Handyman Grant LLC logo" class="header-logo">';
+      html += '    <img src="logoFinal.png" alt="' + htmlEscape(businessInfo.displayName) + ' logo" class="header-logo">';
       html += '  </div>';
 
-      if (
-        custData.name ||
-        custData.address ||
-        custData.jobSite ||
-        custData.phone ||
-        custData.email ||
-        custData.date
-      ) {
+      // Client block
+      if (custData.name || custData.address || custData.jobSite || custData.phone || custData.email || custData.date) {
         html += '  <div class="client-block">';
-        if (custData.name) {
-          html += '    <p><strong>Client:</strong> ' + custData.name + '</p>';
-        }
-        if (custData.address) {
-          html += '    <p><strong>Billing Address:</strong> ' + custData.address + '</p>';
-        }
-        if (custData.jobSite) {
-          html += '    <p><strong>Job Site:</strong> ' + custData.jobSite + '</p>';
-        }
-        if (custData.phone) {
-          html += '    <p><strong>Phone:</strong> ' + custData.phone + '</p>';
-        }
-        if (custData.email) {
-          html += '    <p><strong>Email:</strong> ' + custData.email + '</p>';
-        }
-        if (custData.date) {
-          html += '    <p><strong>Date:</strong> ' + custData.date + '</p>';
-        }
+        if (custData.name) html += '    <p><strong>Client:</strong> ' + htmlEscape(custData.name) + '</p>';
+        if (custData.address) html += '    <p><strong>Billing Address:</strong> ' + htmlEscape(custData.address) + '</p>';
+        if (custData.jobSite) html += '    <p><strong>Job Site:</strong> ' + htmlEscape(custData.jobSite) + '</p>';
+        if (custData.phone) html += '    <p><strong>Phone:</strong> ' + htmlEscape(custData.phone) + '</p>';
+        if (custData.email) html += '    <p><strong>Email:</strong> ' + htmlEscape(custData.email) + '</p>';
+        if (custData.date) html += '    <p><strong>Date:</strong> ' + htmlEscape(custData.date) + '</p>';
         html += '  </div>';
       }
 
+      // Meta row
       if (data.jobId || custData.customerId || custData.date) {
         html += '  <div class="meta-row">';
         if (data.jobId) {
-          html += '    <span><strong>Estimate ID:</strong> ' + data.jobId + '</span>';
+          html += '    <span><strong>' + (docType === "invoice" ? "Invoice ID" : "Estimate ID") + ':</strong> ' + htmlEscape(data.jobId) + '</span>';
         }
         if (custData.customerId) {
-          html += '    <span><strong>Customer ID:</strong> ' + custData.customerId + '</span>';
+          html += '    <span><strong>Customer ID:</strong> ' + htmlEscape(custData.customerId) + '</span>';
         }
         if (custData.date) {
-          html += '    <span><strong>Date:</strong> ' + custData.date + '</span>';
+          html += '    <span><strong>Date:</strong> ' + htmlEscape(custData.date) + '</span>';
         }
         html += '  </div>';
       }
 
-      html += '  <div class="doc-type-banner ' + docBannerClass + '">' + docLabel.toUpperCase() + '</div>';
+      // Doc type banner + PAST DUE badge
+      html += '  <div class="past-due-wrapper">';
+      html += '    <div class="doc-type-banner ' + docBannerClass + '">' + docLabel.toUpperCase() + '</div>';
+      if (isPastDue) html += '    <div class="past-due-box">PAST DUE</div>';
+      html += '  </div>';
 
-      html += '  <h2>' + (data.jobTitle || docLabel) +
-              ' <span class="badge">' + docLabel + '</span></h2>';
+      // Title
+      html += '  <h2>' + htmlEscape(data.jobTitle || docLabel) +
+              ' <span class="badge">' + htmlEscape(docLabel) + '</span></h2>';
+
       if (data.jobCategory) {
-        html += '  <p><strong>Category:</strong> ' + data.jobCategory + '</p>';
+        html += '  <p><strong>Category:</strong> ' + htmlEscape(data.jobCategory) + '</p>';
       }
 
       if (data.jobDescription) {
         html += '  <div class="section-title">Job Description</div>';
-        html += '  <p>' + data.jobDescription + '</p>';
+        html += '  <p>' + htmlEscape(data.jobDescription) + '</p>';
       }
 
+      // Materials
       if (mats.length) {
         html += '  <div class="section-title">Materials</div>';
         html += '  <table><thead><tr>' +
@@ -661,8 +667,8 @@ function loadCombined() {
                 '  </tr></thead><tbody>';
         mats.forEach(m => {
           html += '<tr>' +
-                  '<td>' + (m.item || "") + '</td>' +
-                  '<td>' + (m.qty || "") + '</td>' +
+                  '<td>' + htmlEscape(m.item || "") + '</td>' +
+                  '<td>' + htmlEscape(m.qty ?? "") + '</td>' +
                   '<td class="number-cell">' + (m.unitCost != null ? currency(m.unitCost) : "") + '</td>' +
                   '<td class="number-cell">' + (m._lineTotal != null ? currency(m._lineTotal) : "") + '</td>' +
                   '</tr>';
@@ -671,6 +677,7 @@ function loadCombined() {
         html += '  <p><strong>Materials Subtotal:</strong> ' + currency(matTotal) + '</p>';
       }
 
+      // Labor
       if (labor.length) {
         html += '  <div class="section-title">Labor</div>';
         html += '  <table><thead><tr>' +
@@ -680,8 +687,8 @@ function loadCombined() {
                 '  </tr></thead><tbody>';
         labor.forEach(l => {
           html += '<tr>' +
-                  '<td>' + (l.task || "") + '</td>' +
-                  '<td>' + (l.hours != null ? l.hours : "") + '</td>' +
+                  '<td>' + htmlEscape(l.task || "") + '</td>' +
+                  '<td>' + htmlEscape(l.hours ?? "") + '</td>' +
                   '<td class="number-cell">' + (l.rate != null ? currency(l.rate) : "") + '</td>' +
                   '<td class="number-cell">' + (l._lineTotal != null ? currency(l._lineTotal) : "") + '</td>' +
                   '</tr>';
@@ -690,6 +697,7 @@ function loadCombined() {
         html += '  <p><strong>Labor Subtotal:</strong> ' + currency(laborTotal) + '</p>';
       }
 
+      // Adjustments
       if (adj.length) {
         html += '  <div class="section-title">Flat Adjustments</div>';
         html += '  <table><thead><tr>' +
@@ -697,7 +705,7 @@ function loadCombined() {
                 '  </tr></thead><tbody>';
         adj.forEach(a => {
           html += '<tr>' +
-                  '<td>' + (a.label || "") + '</td>' +
+                  '<td>' + htmlEscape(a.label || "") + '</td>' +
                   '<td class="number-cell">' + (a.amount != null ? currency(a.amount) : "") + '</td>' +
                   '</tr>';
         });
@@ -705,39 +713,42 @@ function loadCombined() {
         html += '  <p><strong>Adjustments Subtotal:</strong> ' + currency(adjTotal) + '</p>';
       }
 
+      // Totals
       html += '  <div class="section-title">Totals</div>';
       html += '  <table class="totals-table"><tbody>';
       html += '    <tr><td>Materials subtotal</td><td class="number-cell">' + currency(matTotal) + '</td></tr>';
       html += '    <tr><td>Labor subtotal</td><td class="number-cell">' + currency(laborTotal) + '</td></tr>';
       html += '    <tr><td>Flat adjustments</td><td class="number-cell">' + currency(adjTotal) + '</td></tr>';
-      html += '    <tr><td><strong>Calculated total (cost basis)</strong></td><td class="number-cell"><strong>' + currency(costBasis) + '</strong></td></tr>';
-      html += '    <tr><td><strong>Final Customer Price</strong></td><td class="number-cell"><strong>' + currency(recommended) + '</strong></td></tr>';
+      html += '    <tr><td><strong>Total</strong></td><td class="number-cell"><strong>' + currency(recommended) + '</strong></td></tr>';
       html += '  </tbody></table>';
 
-      if (document.getElementById("showSignatureToggle").checked) {
-  html += `
-    <div id="signatureBlock" style="margin-top:24px;">
-      <hr style="margin-bottom:16px;">
-      <div style="display:flex; justify-content:space-between; gap:24px;">
-        <div style="flex:1;">
-          <div style="border-bottom:1px solid #000; height:24px;"></div>
-          <div style="font-size:12px; margin-top:4px;">Customer Signature</div>
-        </div>
-        <div style="width:160px;">
-          <div style="border-bottom:1px solid #000; height:24px;"></div>
-          <div style="font-size:12px; margin-top:4px;">Date</div>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-
-      if (data.notes) {
-        html += '  <div class="section-title">Notes</div>';
-        html += '  <div class="notes-box">' + data.notes + '</div>';
+      // Signature block
+      const sigToggle = document.getElementById("showSignatureToggle");
+      if (sigToggle && sigToggle.checked) {
+        html += `
+          <div id="signatureBlock" style="margin-top:24px;">
+            <hr style="margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; gap:24px;">
+              <div style="flex:1;">
+                <div style="border-bottom:1px solid #000; height:24px;"></div>
+                <div style="font-size:12px; margin-top:4px;">Customer Signature</div>
+              </div>
+              <div style="width:160px;">
+                <div style="border-bottom:1px solid #000; height:24px;"></div>
+                <div style="font-size:12px; margin-top:4px;">Date</div>
+              </div>
+            </div>
+          </div>
+        `;
       }
 
+      // Notes
+      if (data.notes) {
+        html += '  <div class="section-title">Notes</div>';
+        html += '  <div class="notes-box">' + htmlEscape(data.notes) + '</div>';
+      }
+
+      // Terms
       html += '  <div class="section-title">Terms &amp; Conditions</div>';
       html += '  <div class="terms-box">';
       html += '    <p>Thank you for choosing Handyman Grant LLC!</p>';
@@ -753,8 +764,7 @@ function loadCombined() {
       html += '    <p>Cancellation within 24 hours of scheduled work may incur a fee.</p>';
       html += '  </div>';
 
-      html += '</div>';
-
+      html += '</div>'; // estimate-container
 
       // --- Job JSON for DB (jobs table) ---
       const jobForDb = {
@@ -772,33 +782,23 @@ function loadCombined() {
       };
 
       const jobBox = document.getElementById("jobForDb");
-      if (jobBox) {
-        jobBox.value = JSON.stringify(jobForDb, null, 2);
-      }
+      if (jobBox) jobBox.value = JSON.stringify(jobForDb, null, 2);
 
       // --- Materials JSON for DB (jobMaterials table) ---
       const matsForDb = mats.map(m => ({
         jobId: data.jobId || "",
         item: m.item || "",
-        qty: m.qty || 0,
-        unitCost: m.unitCost || 0,
-        lineTotal:
-          m._lineTotal != null
-            ? m._lineTotal
-            : ((m.qty || 0) * (m.unitCost || 0))
+        qty: toNumber(m.qty),
+        unitCost: toNumber(m.unitCost),
+        lineTotal: (m._lineTotal != null) ? toNumber(m._lineTotal) : (toNumber(m.qty) * toNumber(m.unitCost))
       }));
 
       const matsBox = document.getElementById("materialsForDb");
-      if (matsBox) {
-        matsBox.value = matsForDb.length
-          ? JSON.stringify(matsForDb, null, 2)
-          : "[]";
-      }
+      if (matsBox) matsBox.value = JSON.stringify(matsForDb.length ? matsForDb : [], null, 2);
 
-      // finally, render the HTML preview
+      // Render
       preview.innerHTML = html;
     }
-
 
     // --- Autosave editor state (localStorage) ---
     (function () {
@@ -816,9 +816,7 @@ function loadCombined() {
         try {
           const raw = localStorage.getItem(storageKey);
           return raw ? JSON.parse(raw) : {};
-        } catch (e) {
-          return {};
-        }
+        } catch (e) { return {}; }
       }
 
       function writeState(state) {
@@ -855,7 +853,6 @@ function loadCombined() {
         saveTimer = setTimeout(() => writeState(collectState()), 200);
       }
 
-      // Expose a clear function for the "Clear Draft" button
       window.clearAutoSavedDraft = function () {
         localStorage.removeItem(storageKey);
 
@@ -863,15 +860,13 @@ function loadCombined() {
           const el = document.getElementById(f.elId);
           if (!el) return;
 
-          if (f.kind === "checked") el.checked = true; // default: include signature
+          if (f.kind === "checked") el.checked = true;
           else el.value = "";
         });
 
-        // Keep the preview in sync with the cleared state
         try { renderEstimate(); } catch (e) {}
       };
 
-      // Restore ASAP so the first render uses restored values
       document.addEventListener("DOMContentLoaded", () => {
         applyState(readState());
 
