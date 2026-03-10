@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Handyman Grant – Edit Estimate</title>
+  <style>
+    :root{
+      --gray:#646464;
+      --gold:#D4AF37;
+      --burg:#800020;
+      --bg:#f5f5f7;
+      --card:#ffffff;
+      --ink:#222;
+      --muted:#666;
+      --border:#e3e3e8;
+      --shadow: 0 2px 10px rgba(0,0,0,0.06);
+      --radius: 12px;
+    }
+    *{ box-sizing:border-box; font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    body{ margin:0; padding:16px; background:var(--bg); color:var(--ink); }
+    .wrap{ max-width: 1200px; margin:0 auto; display:flex; flex-direction:column; gap:16px; }
+
+    .topbar{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 12px 14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .brand h1{ margin:0; font-size:1.1rem; }
+    .brand .sub{ color:var(--muted); font-size:0.9rem; margin-top:4px; }
+
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    button{
+      border:none;
+      border-radius:999px;
+      padding: 9px 14px;
+      font-size:0.9rem;
+      font-weight:800;
+      cursor:pointer;
+      color:#fff;
+      background:#222;
+    }
+    button.secondary{ background: var(--gray); }
+    button.gold{ background: var(--gold); color:#222; }
+    button.burg{ background: var(--burg); }
+    button:active{ transform: translateY(1px); }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:16px;
+    }
+    @media (min-width: 980px){
+      .grid{ grid-template-columns: 1.1fr 0.9fr; align-items:start; }
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 12px 14px;
+    }
+    h2{ margin:0 0 10px; font-size:1rem; }
+    .hint{ margin:0 0 10px; color:var(--muted); font-size:0.86rem; line-height:1.35; }
+
+    .fieldGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top:8px;
+    }
+    .fieldGrid .full{ grid-column:1/-1; }
+    label.small{ display:block; font-size:0.78rem; color:var(--muted); margin-bottom:4px; }
+    input, textarea{
+      width:100%;
+      border:1px solid #ccc;
+      border-radius: 10px;
+      padding: 8px 10px;
+      background:#fafafa;
+      font-size:0.9rem;
+      color:var(--ink);
+    }
+    textarea{ min-height:90px; resize:vertical; }
+
+    .sectionTitle{
+      margin-top:14px;
+      margin-bottom:6px;
+      font-size:0.95rem;
+      font-weight:900;
+      border-bottom:1px solid #ddd;
+      padding-bottom:4px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .sectionTitle .miniNote{ font-weight:700; color:var(--muted); font-size:0.82rem; }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:6px;
+      font-size:0.88rem;
+    }
+    th, td{
+      padding:6px 6px;
+      border-bottom:1px solid #e8e8e8;
+      vertical-align:top;
+      text-align:left;
+    }
+    th{ background:#f0f0f2; font-weight:900; font-size:0.85rem; }
+    td input{ background:#fff; padding:6px 8px; border-radius:9px; font-size:0.88rem; }
+    .num{ text-align:right; }
+
+    .rowBtns{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+    .rowBtns button{ padding:7px 12px; font-size:0.85rem; background:#444; }
+    .rowBtns button.burg{ background: var(--burg); }
+
+    .totals{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:8px;
+      margin-top:10px;
+    }
+    .totals .line{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      font-size:0.92rem;
+    }
+    .totals .grand{
+      border-top:1px solid #ccc;
+      padding-top:8px;
+      margin-top:4px;
+      font-size:1rem;
+      font-weight:900;
+    }
+
+    .error{
+      color: var(--burg);
+      font-weight:900;
+      white-space:pre-wrap;
+      margin-top:10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <h1>Edit Estimate</h1>
+        <div class="sub">Edits are sent back to the main page using localStorage.</div>
+      </div>
+      <div class="actions">
+        <button class="secondary" type="button" onclick="sendToMain(false)">Send to main page</button>
+        <button class="gold" type="button" onclick="sendToMain(true)">Confirm and close</button>
+        <button class="burg" type="button" onclick="window.close()">Cancel</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Estimate</h2>
+        <p class="hint">Edit job details and line items. Totals update live.</p>
+
+        <div class="fieldGrid">
+          <div>
+            <label class="small" for="jobId">Job ID</label>
+            <input id="jobId" placeholder="e.g., 149">
+          </div>
+          <div>
+            <label class="small" for="recommendedPrice">Recommended Price</label>
+            <input id="recommendedPrice" inputmode="decimal" placeholder="Leave blank to use computed total">
+          </div>
+
+          <div class="full">
+            <label class="small" for="jobTitle">Job Title</label>
+            <input id="jobTitle" placeholder="e.g., Minor Home Repair Tasks">
+          </div>
+
+          <div class="full">
+            <label class="small" for="jobCategory">Job Category</label>
+            <input id="jobCategory" placeholder="e.g., Drywall & Paint">
+          </div>
+
+          <div class="full">
+            <label class="small" for="jobDescription">Job Description</label>
+            <textarea id="jobDescription" placeholder="Short description of the scope"></textarea>
+          </div>
+        </div>
+
+        <div class="sectionTitle">
+          <div>Labor Tasks</div>
+          <div class="miniNote">hours × rate</div>
+        </div>
+        <table id="laborTable">
+          <thead>
+            <tr>
+              <th style="width:50%;">Task</th>
+              <th style="width:12%;" class="num">Hours</th>
+              <th style="width:12%;" class="num">Rate</th>
+              <th style="width:20%;">Notes</th>
+              <th style="width:6%;">Del</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div class="rowBtns">
+          <button type="button" onclick="addLaborRow()">Add Task</button>
+          <button class="burg" type="button" onclick="clearTable('laborTable')">Clear Labor</button>
+        </div>
+
+        <div class="sectionTitle">
+          <div>Materials</div>
+          <div class="miniNote">qty × unit cost</div>
+        </div>
+        <table id="materialsTable">
+          <thead>
+            <tr>
+              <th style="width:46%;">Item</th>
+              <th style="width:10%;" class="num">Qty</th>
+              <th style="width:14%;" class="num">Unit Cost</th>
+              <th style="width:24%;">Notes</th>
+              <th style="width:6%;">Del</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div class="rowBtns">
+          <button type="button" onclick="addMaterialRow()">Add Material</button>
+          <button class="burg" type="button" onclick="clearTable('materialsTable')">Clear Materials</button>
+        </div>
+
+        <div class="sectionTitle">
+          <div>Flat Adjustments</div>
+          <div class="miniNote">add/subtract</div>
+        </div>
+        <table id="adjustmentsTable">
+          <thead>
+            <tr>
+              <th style="width:52%;">Label</th>
+              <th style="width:16%;" class="num">Amount</th>
+              <th style="width:26%;">Notes</th>
+              <th style="width:6%;">Del</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div class="rowBtns">
+          <button type="button" onclick="addAdjustmentRow()">Add Adjustment</button>
+          <button class="burg" type="button" onclick="clearTable('adjustmentsTable')">Clear Adjustments</button>
+        </div>
+
+        <div class="sectionTitle">
+          <div>Notes</div>
+          <div class="miniNote">prints on estimate</div>
+        </div>
+        <textarea id="notes" placeholder="Notes shown on the estimate"></textarea>
+
+        <div class="totals">
+          <div class="line"><span>Materials subtotal</span><span id="matSubtotal">$0.00</span></div>
+          <div class="line"><span>Labor subtotal</span><span id="laborSubtotal">$0.00</span></div>
+          <div class="line"><span>Flat adjustments</span><span id="adjSubtotal">$0.00</span></div>
+          <div class="line grand"><span>Total</span><span id="computedTotal">$0.00</span></div>
+          <div class="line"><span>Recommended (if set)</span><span id="recommendedDisplay">$0.00</span></div>
+        </div>
+
+        <div id="errorBox" class="error"></div>
+      </div>
+
+      <div class="card">
+        <h2>Customer</h2>
+        <p class="hint">Fill these if you want them to show on the printed estimate.</p>
+
+        <div class="fieldGrid">
+          <div>
+            <label class="small" for="customerId">Customer ID</label>
+            <input id="customerId" placeholder="e.g., 132">
+          </div>
+          <div>
+            <label class="small" for="date">Date</label>
+            <input id="date" type="date">
+          </div>
+
+          <div class="full">
+            <label class="small" for="customerName">Name</label>
+            <input id="customerName" placeholder="Customer full name">
+          </div>
+
+          <div class="full">
+            <label class="small" for="address">Billing Address</label>
+            <input id="address" placeholder="Street, City, State ZIP">
+          </div>
+
+          <div class="full">
+            <label class="small" for="jobSite">Job Site</label>
+            <input id="jobSite" placeholder="If different than billing address">
+          </div>
+
+          <div>
+            <label class="small" for="phone">Phone</label>
+            <input id="phone" placeholder="(###) ###-####">
+          </div>
+          <div>
+            <label class="small" for="email">Email</label>
+            <input id="email" placeholder="name@example.com">
+          </div>
+        </div>
+
+        <div class="rowBtns" style="margin-top:12px;">
+          <button class="secondary" type="button" onclick="setDateToday()">Set date to today</button>
+          <button class="secondary" type="button" onclick="clearCustomer()">Clear customer</button>
+        </div>
+
+        <p class="hint" style="margin-top:10px;">
+          Tip: if this tab opens blank, it means index did not write the payload yet. Reload index and click Edit again.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const editorSendKey = "invoiceEstimateThing_editorSend_v1";
+    const editorReturnKey = "invoiceEstimateThing_editorReturn_v1";
+
+    function q(id){ return document.getElementById(id); }
+    function n(v, fallback=0){ const x = Number(v); return Number.isFinite(x) ? x : fallback; }
+    function money(x){ const v = Number(x); return Number.isFinite(v) ? "$" + v.toFixed(2) : "$0.00"; }
+    function escAttr(s){ return String(s ?? "").replaceAll('"', "&quot;"); }
+
+    function attachFieldListeners(){
+      const ids = ["jobId","jobTitle","jobCategory","jobDescription","recommendedPrice","notes",
+                   "customerId","customerName","address","jobSite","phone","email","date"];
+      ids.forEach(id => {
+        const el = q(id);
+        el.addEventListener("input", onAnyChange);
+        el.addEventListener("change", onAnyChange);
+      });
+    }
+    function onAnyChange(){ updateTotals(); }
+
+    function attachRowInputs(tr){
+      tr.querySelectorAll("input").forEach(inp => {
+        inp.addEventListener("input", onAnyChange);
+        inp.addEventListener("change", onAnyChange);
+      });
+    }
+
+    function buildLaborRow(row={task:"", hours:"", rate:"80", notes:""}){
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><input data-k="task" placeholder="Task" value="${escAttr(row.task)}"></td>
+        <td><input data-k="hours" class="num" inputmode="decimal" placeholder="0" value="${row.hours ?? ""}"></td>
+        <td><input data-k="rate" class="num" inputmode="decimal" placeholder="80" value="${row.rate ?? ""}"></td>
+        <td><input data-k="notes" placeholder="" value="${escAttr(row.notes)}"></td>
+        <td><button type="button" class="burg" onclick="removeRow(this)">X</button></td>
+      `;
+      attachRowInputs(tr);
+      return tr;
+    }
+    function buildMaterialRow(row={item:"", qty:"", unitCost:"", notes:""}){
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><input data-k="item" placeholder="Item" value="${escAttr(row.item)}"></td>
+        <td><input data-k="qty" class="num" inputmode="decimal" placeholder="0" value="${row.qty ?? ""}"></td>
+        <td><input data-k="unitCost" class="num" inputmode="decimal" placeholder="0" value="${row.unitCost ?? ""}"></td>
+        <td><input data-k="notes" placeholder="" value="${escAttr(row.notes)}"></td>
+        <td><button type="button" class="burg" onclick="removeRow(this)">X</button></td>
+      `;
+      attachRowInputs(tr);
+      return tr;
+    }
+    function buildAdjustmentRow(row={label:"", amount:"", notes:""}){
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><input data-k="label" placeholder="Label" value="${escAttr(row.label)}"></td>
+        <td><input data-k="amount" class="num" inputmode="decimal" placeholder="0" value="${row.amount ?? ""}"></td>
+        <td><input data-k="notes" placeholder="" value="${escAttr(row.notes)}"></td>
+        <td><button type="button" class="burg" onclick="removeRow(this)">X</button></td>
+      `;
+      attachRowInputs(tr);
+      return tr;
+    }
+
+    function removeRow(btn){
+      const tr = btn.closest("tr");
+      if (tr) tr.remove();
+      ensureMinRows();
+      onAnyChange();
+    }
+
+    function ensureMinRows(){
+      if (!q("laborTable").querySelector("tbody").children.length) addLaborRow();
+      if (!q("materialsTable").querySelector("tbody").children.length) addMaterialRow();
+    }
+
+    function clearTable(tableId){
+      q(tableId).querySelector("tbody").innerHTML = "";
+      ensureMinRows();
+      onAnyChange();
+    }
+
+    function addLaborRow(){
+      q("laborTable").querySelector("tbody").appendChild(buildLaborRow({rate:"80"}));
+      onAnyChange();
+    }
+    function addMaterialRow(){
+      q("materialsTable").querySelector("tbody").appendChild(buildMaterialRow({}));
+      onAnyChange();
+    }
+    function addAdjustmentRow(){
+      q("adjustmentsTable").querySelector("tbody").appendChild(buildAdjustmentRow({}));
+      onAnyChange();
+    }
+
+    function readTable(tableId, numericKeys){
+      const rows = [];
+      q(tableId).querySelectorAll("tbody tr").forEach(tr => {
+        const obj = {};
+        tr.querySelectorAll("input").forEach(inp => obj[inp.dataset.k] = inp.value ?? "");
+        numericKeys.forEach(k => obj[k] = n(obj[k], 0));
+        rows.push(obj);
+      });
+      return rows;
+    }
+
+    function readLabor(){
+      const out = [];
+      readTable("laborTable", ["hours","rate"]).forEach(r => {
+        r.task = String(r.task ?? "");
+        r.notes = String(r.notes ?? "");
+        if (r.task.trim() || r.hours || r.rate) out.push(r);
+      });
+      return out;
+    }
+    function readMaterials(){
+      const out = [];
+      readTable("materialsTable", ["qty","unitCost"]).forEach(r => {
+        r.item = String(r.item ?? "");
+        r.notes = String(r.notes ?? "");
+        if (r.item.trim() || r.qty || r.unitCost) out.push(r);
+      });
+      return out;
+    }
+    function readAdjustments(){
+      const out = [];
+      readTable("adjustmentsTable", ["amount"]).forEach(r => {
+        r.label = String(r.label ?? "");
+        r.notes = String(r.notes ?? "");
+        if (r.label.trim() || r.amount) out.push(r);
+      });
+      return out;
+    }
+
+    function updateTotals(){
+      const mats = readMaterials();
+      const labor = readLabor();
+      const adj = readAdjustments();
+
+      let matTotal = 0;
+      mats.forEach(m => matTotal += n(m.qty,0) * n(m.unitCost,0));
+
+      let laborTotal = 0;
+      labor.forEach(l => laborTotal += n(l.hours,0) * n(l.rate,0));
+
+      let adjTotal = 0;
+      adj.forEach(a => adjTotal += n(a.amount,0));
+
+      const computed = matTotal + laborTotal + adjTotal;
+
+      q("matSubtotal").textContent = money(matTotal);
+      q("laborSubtotal").textContent = money(laborTotal);
+      q("adjSubtotal").textContent = money(adjTotal);
+      q("computedTotal").textContent = money(computed);
+
+      const rec = n(q("recommendedPrice").value || 0, 0);
+      q("recommendedDisplay").textContent = money(rec > 0 ? rec : computed);
+
+      // light warnings
+      const errs = [];
+      if (!q("jobTitle").value.trim()) errs.push("Job Title is empty.");
+      q("errorBox").textContent = errs.length ? errs.join("\n") : "";
+    }
+
+    function writeFormFromCombined(payload){
+      const est = payload.estimateJson || {};
+      const cust = payload.customerJson || {};
+
+      q("jobId").value = est.jobId ?? "";
+      q("jobTitle").value = est.jobTitle ?? "";
+      q("jobCategory").value = est.jobCategory ?? "";
+      q("jobDescription").value = est.jobDescription ?? "";
+      q("recommendedPrice").value = (est.recommendedPrice ?? "");
+      q("notes").value = est.notes ?? "";
+
+      q("customerId").value = cust.customerId ?? "";
+      q("customerName").value = cust.name ?? "";
+      q("address").value = cust.address ?? "";
+      q("jobSite").value = cust.jobSite ?? "";
+      q("phone").value = cust.phone ?? "";
+      q("email").value = cust.email ?? "";
+      q("date").value = (cust.date && String(cust.date).length >= 10) ? String(cust.date).slice(0,10) : "";
+
+      // tables
+      q("laborTable").querySelector("tbody").innerHTML = "";
+      (est.labor || []).forEach(r => q("laborTable").querySelector("tbody").appendChild(buildLaborRow(r)));
+
+      q("materialsTable").querySelector("tbody").innerHTML = "";
+      (est.materials || []).forEach(r => q("materialsTable").querySelector("tbody").appendChild(buildMaterialRow(r)));
+
+      q("adjustmentsTable").querySelector("tbody").innerHTML = "";
+      (est.flatAdjustments || []).forEach(r => q("adjustmentsTable").querySelector("tbody").appendChild(buildAdjustmentRow(r)));
+
+      ensureMinRows();
+      updateTotals();
+    }
+
+    function buildCombinedFromForm(){
+      return {
+        estimateJson: {
+          jobId: q("jobId").value || "",
+          jobTitle: q("jobTitle").value || "",
+          jobCategory: q("jobCategory").value || "",
+          jobDescription: q("jobDescription").value || "",
+          materials: readMaterials(),
+          labor: readLabor(),
+          flatAdjustments: readAdjustments(),
+          recommendedPrice: n(q("recommendedPrice").value || 0, 0),
+          notes: q("notes").value || ""
+        },
+        customerJson: {
+          customerId: q("customerId").value || "",
+          name: q("customerName").value || "",
+          address: q("address").value || "",
+          jobSite: q("jobSite").value || "",
+          phone: q("phone").value || "",
+          email: q("email").value || "",
+          date: q("date").value || ""
+        }
+      };
+    }
+
+    function sendToMain(andClose){
+      const combined = buildCombinedFromForm();
+      localStorage.setItem(editorReturnKey, JSON.stringify(combined));
+      if (andClose) window.close();
+    }
+
+    function setDateToday(){
+      const d = new Date();
+      const pad = (x) => String(x).padStart(2, "0");
+      q("date").value = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+      onAnyChange();
+    }
+
+    function clearCustomer(){
+      ["customerId","customerName","address","jobSite","phone","email","date"].forEach(id => q(id).value = "");
+      onAnyChange();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      attachFieldListeners();
+
+      // Load payload from index (localStorage bus)
+      let loaded = false;
+      try {
+        const raw = localStorage.getItem(editorSendKey);
+        if (raw) {
+          const payload = JSON.parse(raw);
+          const est = payload.estimateJson ?? payload.estimate ?? {};
+          const cust = payload.customerJson ?? payload.customer ?? {};
+          writeFormFromCombined({ estimateJson: est, customerJson: cust });
+          loaded = true;
+        }
+      } catch (e) {}
+
+      if (!loaded) {
+        ensureMinRows();
+        updateTotals();
+      }
+    });
+  </script>
+</body>
+</html>

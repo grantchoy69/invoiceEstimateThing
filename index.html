@@ -17,7 +17,10 @@
     }
 
     @media (min-width: 900px) {
-      .layout { flex-direction: row; align-items: flex-start; }
+      .layout {
+        flex-direction: row;
+        align-items: flex-start;
+      }
     }
 
     .editor-column {
@@ -27,14 +30,20 @@
       flex: 1;
     }
 
-    .editor, .preview {
+    .editor {
       background: #fff;
       padding: 12px 14px;
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     }
 
-    .preview { flex: 2; }
+    .preview {
+      background: #fff;
+      padding: 12px 14px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      flex: 2;
+    }
 
     textarea {
       width: 100%;
@@ -58,25 +67,13 @@
       background: #222;
       color: #fff;
       font-size: 0.9rem;
+      font-weight: 700;
     }
 
     button:active { transform: translateY(1px); }
-
-    .toolRow {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-      margin-top: 8px;
-    }
-
-    .toolRow button {
-      margin-top: 0;
-      padding: 6px 10px;
-      font-size: 0.85rem;
-      background: #444;
-    }
-    .toolRow button:hover { background: #222; }
+    button.secondary { background: #646464; }
+    button.gold { background: #D4AF37; color: #222; }
+    button.burg { background: #800020; }
 
     .estimate-container {
       max-width: 800px;
@@ -134,7 +131,6 @@
     }
 
     th { background: #f0f0f2; font-weight: 600; }
-
     .number-cell { text-align: right; white-space: nowrap; }
 
     .badge {
@@ -161,6 +157,7 @@
       margin-top: 6px;
       font-size: 0.8rem;
       color: #b00020;
+      white-space: pre-wrap;
     }
 
     .totals-table td { border: none; padding: 2px 0; }
@@ -191,7 +188,6 @@
       border: 1px solid #e0e0e5;
       font-size: 0.9rem;
     }
-
     .client-block p { margin: 2px 0; }
 
     .doc-type-banner {
@@ -204,27 +200,11 @@
       font-size: 0.9rem;
       display: inline-block;
     }
+    .doc-type-estimate { background: #e5f4ff; color: #085a9b; border: 1px solid #b7d8f5; }
+    .doc-type-invoice { background: #fff3cd; color: #856404; border: 1px solid #ffe08a; }
 
-    .doc-type-estimate {
-      background: #e5f4ff;
-      color: #085a9b;
-      border: 1px solid #b7d8f5;
-    }
-
-    .doc-type-invoice {
-      background: #fff3cd;
-      color: #856404;
-      border: 1px solid #ffe08a;
-    }
-
-    .doc-type-toggle {
-      margin-top: 6px;
-      font-size: 0.85rem;
-      color: #555;
-    }
-
+    .doc-type-toggle { margin-top: 6px; font-size: 0.85rem; color: #555; }
     .doc-type-toggle label { display: block; margin-bottom: 2px; }
-
     .doc-type-toggle select {
       width: 100%;
       padding: 4px 6px;
@@ -234,32 +214,30 @@
       background: #fafafa;
     }
 
-    .past-due-box {
-      display: inline-block;
-      margin-left: 10px;
-      padding: 4px 10px;
-      background: #b00020;
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.8rem;
-      border-radius: 4px;
-      letter-spacing: 0.08em;
-    }
-
-    .past-due-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
     @media print {
       body { background: #fff; }
       .editor { display: none; }
       .preview { box-shadow: none; padding: 0; }
       .estimate-container { max-width: 100%; margin: 0; padding: 0; }
       .header-logo { filter: grayscale(100%); max-width: 90px; }
-      #signatureToggleRow { display: none; }
+      #signatureToggleRow {display: none;}
     }
+
+    .toolRow {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .toolRow button {
+      margin-top: 0;
+      padding: 6px 10px;
+      font-size: 0.85rem;
+      background: #444;
+      font-weight: 700;
+    }
+    .toolRow button:hover { background: #222; }
   </style>
 </head>
 
@@ -272,33 +250,7 @@
         <p style="font-size:0.8rem; color:#555;">
           Paste your full-format JSON here and tap <strong>Render</strong>. Then print the preview.
         </p>
-        <textarea id="jsonInput" spellcheck="false">
-{
-  "jobId": "136",
-  "jobTitle": "Solar Pool Panel Relocation",
-  "jobCategory": "Plumbing & Roof Work",
-  "jobDescription": "Relocate existing solar pool heating panels from upper roof section to lower roof section. Disconnect and reroute PVC, secure panels, seal penetrations, and test system.",
-  "materials": [
-    { "item": "PVC pipe (1.5\" or 2\")", "qty": 12, "unitCost": 5.0 },
-    { "item": "PVC elbows / couplers / unions (UV-rated)", "qty": 8, "unitCost": 7.0 },
-    { "item": "PVC primer & cement", "qty": 1, "unitCost": 24.0 },
-    { "item": "Stainless roof mounting straps", "qty": 8, "unitCost": 8.0 },
-    { "item": "Roof sealant", "qty": 1, "unitCost": 18.0 }
-  ],
-  "labor": [
-    { "task": "Remove existing solar panels from upper roof", "hours": 1.13, "rate": 95 },
-    { "task": "Relocate & secure panels on lower roof", "hours": 1.13, "rate": 95 },
-    { "task": "Reroute & reconfigure PVC plumbing", "hours": 1.5, "rate": 95 },
-    { "task": "Seal penetrations, test system, adjust flow", "hours": 0.75, "rate": 95 }
-  ],
-  "flatAdjustments": [
-    { "label": "Roof access & safety setup", "amount": 40 },
-    { "label": "Disposal of unusable straps or broken PVC", "amount": 15 }
-  ],
-  "recommendedPrice": 925,
-  "notes": "Labor reflects approximately 4.5 hours on site, with real-world duration around 5–7 hours depending on conditions."
-}
-        </textarea>
+        <textarea id="jsonInput" spellcheck="false"></textarea>
         <div class="toolRow">
           <button type="button" onclick="saveTextareaJson('jsonInput', 'estimateJson')">Save Estimate JSON</button>
         </div>
@@ -310,17 +262,7 @@
         <p style="font-size:0.8rem; color:#555;">
           Paste customer details here to show on the estimate (name, address, etc.).
         </p>
-        <textarea id="jsonCustomer" spellcheck="false">
-{
-  "customerId": "100",
-  "name": "Jane Doe",
-  "address": "123 Main St, San Diego, CA 92101",
-  "jobSite": "Same as address",
-  "phone": "(760) 555-1234",
-  "email": "jane@example.com",
-  "date": "2025-12-05"
-}
-        </textarea>
+        <textarea id="jsonCustomer" spellcheck="false"></textarea>
         <div class="toolRow">
           <button type="button" onclick="saveTextareaJson('jsonCustomer', 'customerJson')">Save Customer JSON</button>
         </div>
@@ -334,7 +276,7 @@
         </div>
 
         <button onclick="renderEstimate()">Render</button>
-        <button type="button" onclick="clearAutoSavedDraft()" style="background:#646464;">Clear Draft</button>
+        <button type="button" class="secondary" onclick="clearAutoSavedDraft()">Clear Draft</button>
         <div id="errorBox" class="error"></div>
       </div>
 
@@ -345,50 +287,26 @@
         </label>
       </div>
 
-      <!-- Combined JSON input from DB -->
+      <!-- Combined JSON -->
       <div class="editor">
         <h3>Combined JSON (from database)</h3>
         <p style="font-size:0.8rem; color:#555;">
-          When exporting from your database, use a combined JSON object with
-          <code>estimateJson</code> and <code>customerJson</code> fields, and paste it here.
-          Then tap the button to load both boxes above.
+          Combined JSON should have <code>estimateJson</code> and optionally <code>customerJson</code>.
+          Load will populate the two boxes above.
         </p>
-        <textarea id="combinedInput" class="small-textarea" spellcheck="false">
-{
-  "estimateJson": {
-    "jobId": "136",
-    "jobTitle": "Example Job",
-    "jobCategory": "Example Category",
-    "jobDescription": "Example combined export.",
-    "materials": [],
-    "labor": [],
-    "flatAdjustments": [],
-    "recommendedPrice": 0,
-    "notes": ""
-  },
-  "customerJson": {
-    "customerId": "100",
-    "name": "Example Customer",
-    "address": "123 Example St, City, ST 00000",
-    "jobSite": "Same as address",
-    "phone": "",
-    "email": "",
-    "date": "2025-12-05"
-  }
-}
-        </textarea>
+        <textarea id="combinedInput" class="small-textarea" spellcheck="false"></textarea>
         <div class="toolRow">
           <button type="button" onclick="saveTextareaJson('combinedInput', 'combinedJson')">Save Combined JSON</button>
+          <button type="button" onclick="loadCombined()">Load from Combined JSON</button>
+          <button type="button" class="gold" onclick="openEditor()">Edit in Form</button>
         </div>
-        <button onclick="loadCombined()">Load from Combined JSON</button>
       </div>
 
       <!-- Job JSON for DB -->
       <div class="editor">
         <h3>Job for Database (jobs)</h3>
         <p style="font-size:0.8rem; color:#555;">
-          After you click <strong>Render</strong>, this fills with a single JSON object
-          you can import into the <code>jobs</code> table.
+          After you click <strong>Render</strong>, this fills with a JSON object you can import into the <code>jobs</code> table.
         </p>
         <textarea id="jobForDb" class="small-textarea" spellcheck="false" readonly></textarea>
         <div class="toolRow">
@@ -400,8 +318,7 @@
       <div class="editor">
         <h3>Materials for Database (jobMaterials)</h3>
         <p style="font-size:0.8rem; color:#555;">
-          After you click <strong>Render</strong>, this fills with a JSON array
-          you can import into the <code>jobMaterials</code> table.
+          After you click <strong>Render</strong>, this fills with a JSON array you can import into the <code>jobMaterials</code> table.
         </p>
         <textarea id="materialsForDb" class="small-textarea" spellcheck="false" readonly></textarea>
         <div class="toolRow">
@@ -415,10 +332,50 @@
   </div>
 
   <script>
-    // --- Business identity / verification (edit these once, prints on every doc) ---
+    // ===== LocalStorage editor bus keys (works even when window.opener is null) =====
+    const editorSendKey = "invoiceEstimateThing_editorSend_v1";
+    const editorReturnKey = "invoiceEstimateThing_editorReturn_v1";
+
+    // --- Defaults ---
+    const defaultEstimate = {
+      jobId: "136",
+      jobTitle: "Solar Pool Panel Relocation",
+      jobCategory: "Plumbing & Roof Work",
+      jobDescription: "Relocate existing solar pool heating panels from upper roof section to lower roof section. Disconnect and reroute PVC, secure panels, seal penetrations, and test system.",
+      materials: [
+        { item: "PVC pipe (1.5\" or 2\")", qty: 12, unitCost: 5.0 },
+        { item: "PVC elbows / couplers / unions (UV-rated)", qty: 8, unitCost: 7.0 },
+        { item: "PVC primer & cement", qty: 1, unitCost: 24.0 },
+        { item: "Stainless roof mounting straps", qty: 8, unitCost: 8.0 },
+        { item: "Roof sealant", qty: 1, unitCost: 18.0 }
+      ],
+      labor: [
+        { task: "Remove existing solar panels from upper roof", hours: 1.13, rate: 95 },
+        { task: "Relocate & secure panels on lower roof", hours: 1.13, rate: 95 },
+        { task: "Reroute & reconfigure PVC plumbing", hours: 1.5, rate: 95 },
+        { task: "Seal penetrations, test system, adjust flow", hours: 0.75, rate: 95 }
+      ],
+      flatAdjustments: [
+        { label: "Roof access & safety setup", amount: 40 },
+        { label: "Disposal of unusable straps or broken PVC", amount: 15 }
+      ],
+      recommendedPrice: 925,
+      notes: "Labor reflects approximately 4.5 hours on site, with real-world duration around 5–7 hours depending on conditions."
+    };
+
+    const defaultCustomer = {
+      customerId: "100",
+      name: "Jane Doe",
+      address: "123 Main St, San Diego, CA 92101",
+      jobSite: "Same as address",
+      phone: "(760) 555-1234",
+      email: "jane@example.com",
+      date: "2025-12-05"
+    };
+
+    // --- Business identity ---
     const businessInfo = {
       displayName: "Handyman Grant LLC",
-      legalName: "Handyman Grant LLC",
       phone: "(760) 523-8688",
       email: "handyman@grantchoy.com",
       website: "https://handymangrant.com/",
@@ -428,14 +385,10 @@
       ein: "39-5153884"
     };
 
-    function toNumber(x) {
-      const n = Number(x);
-      return Number.isFinite(n) ? n : 0;
-    }
-
     function currency(n) {
-      const v = toNumber(n);
-      return "$" + v.toFixed(2);
+      const x = Number(n);
+      if (!Number.isFinite(x)) return "$0.00";
+      return "$" + x.toFixed(2);
     }
 
     function htmlEscape(s) {
@@ -445,19 +398,6 @@
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#39;");
-    }
-
-    // Parse YYYY-MM-DD safely in local time (avoids timezone off-by-1)
-    function parseDateYmd(dateStr) {
-      if (!dateStr) return null;
-      const ymd = String(dateStr).slice(0, 10);
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(ymd)) return null;
-      return new Date(ymd + "T00:00:00");
-    }
-
-    function daysBetween(a, b) {
-      const msInDay = 1000 * 60 * 60 * 24;
-      return (b - a) / msInDay;
     }
 
     function saveTextareaJson(textareaId, fileBase) {
@@ -488,7 +428,7 @@
       a.click();
       a.remove();
 
-      URL.revokeObjectURL(url);
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
     }
 
     function loadCombined() {
@@ -497,18 +437,63 @@
       errorBox.textContent = "";
 
       try {
-        const combined = JSON.parse(raw);
-        if (!combined.estimateJson || !combined.customerJson) {
-          throw new Error("Combined JSON must have 'estimateJson' and 'customerJson' fields.");
-        }
+        const combined = JSON.parse(raw || "{}");
+        if (!combined.estimateJson) throw new Error("Combined JSON must have 'estimateJson'.");
 
         document.getElementById("jsonInput").value = JSON.stringify(combined.estimateJson, null, 2);
-        document.getElementById("jsonCustomer").value = JSON.stringify(combined.customerJson, null, 2);
+
+        if (combined.customerJson) {
+          document.getElementById("jsonCustomer").value = JSON.stringify(combined.customerJson, null, 2);
+        } else {
+          document.getElementById("jsonCustomer").value = "";
+        }
+
         renderEstimate();
       } catch (e) {
         errorBox.textContent = "Combined JSON error: " + e.message;
       }
     }
+
+    function getCombinedPayloadForEditor() {
+      const combinedText = document.getElementById("combinedInput").value.trim();
+      if (combinedText) {
+        try {
+          const obj = JSON.parse(combinedText);
+          if (obj.estimateJson) return obj;
+        } catch (e) {}
+      }
+
+      let estimateJson = {};
+      let customerJson = {};
+      try { estimateJson = JSON.parse(document.getElementById("jsonInput").value || "{}"); } catch (e) {}
+      const custRaw = (document.getElementById("jsonCustomer").value || "").trim();
+      if (custRaw) {
+        try { customerJson = JSON.parse(custRaw); } catch (e) {}
+      }
+
+      return { estimateJson, customerJson };
+    }
+
+    // Open editor using localStorage bus
+    function openEditor() {
+      const payload = getCombinedPayloadForEditor();
+      localStorage.setItem(editorSendKey, JSON.stringify(payload));
+      window.open("./edit.html", "_blank");
+    }
+
+    // Receive updated payload from editor via storage event
+    window.addEventListener("storage", (event) => {
+      if (event.key !== editorReturnKey) return;
+      if (!event.newValue) return;
+
+      try {
+        const combined = JSON.parse(event.newValue);
+        document.getElementById("combinedInput").value = JSON.stringify(combined, null, 2);
+        loadCombined();
+      } catch (e) {
+        document.getElementById("errorBox").textContent = "Editor return parse error: " + e.message;
+      }
+    });
 
     function renderEstimate() {
       const estInput = document.getElementById("jsonInput").value;
@@ -516,8 +501,7 @@
       const errorBox = document.getElementById("errorBox");
       const preview = document.getElementById("preview");
 
-      const docTypeElem = document.getElementById("docType");
-      const docType = docTypeElem ? docTypeElem.value : "estimate";
+      const docType = document.getElementById("docType")?.value || "estimate";
       const docLabel = (docType === "invoice" ? "Invoice" : "Estimate");
       const docBannerClass = (docType === "invoice" ? "doc-type-invoice" : "doc-type-estimate");
 
@@ -526,92 +510,68 @@
       let data;
       let custData = {};
 
-      try {
-        data = JSON.parse(estInput);
-      } catch (e) {
+      try { data = JSON.parse(estInput); }
+      catch (e) {
         errorBox.textContent = "Estimate JSON error: " + e.message;
         preview.innerHTML = "";
         return;
       }
 
       if (custInput.trim()) {
-        try {
-          custData = JSON.parse(custInput);
-        } catch (e) {
+        try { custData = JSON.parse(custInput); }
+        catch (e) {
           errorBox.textContent = "Customer JSON error: " + e.message;
           preview.innerHTML = "";
           return;
         }
       }
 
-      // --- Past Due Logic (Invoice only; >14 days since custData.date) ---
-      let isPastDue = false;
-      if (docType === "invoice") {
-        const invoiceDate = parseDateYmd(custData.date);
-        if (invoiceDate) {
-          const now = new Date();
-          const d = daysBetween(invoiceDate, now);
-          if (d > 14) isPastDue = true;
-        }
-      }
-
-      const mats = Array.isArray(data.materials) ? data.materials : [];
-      const labor = Array.isArray(data.labor) ? data.labor : [];
-      const adj = Array.isArray(data.flatAdjustments) ? data.flatAdjustments : [];
+      const mats = data.materials || [];
+      const labor = data.labor || [];
+      const adj = data.flatAdjustments || [];
 
       let matTotal = 0;
       mats.forEach(m => {
-        const line = toNumber(m.qty) * toNumber(m.unitCost);
+        const line = (Number(m.qty) || 0) * (Number(m.unitCost) || 0);
         m._lineTotal = line;
         matTotal += line;
       });
 
       let laborTotal = 0;
       labor.forEach(l => {
-        const line = toNumber(l.hours) * toNumber(l.rate);
+        const line = (Number(l.hours) || 0) * (Number(l.rate) || 0);
         l._lineTotal = line;
         laborTotal += line;
       });
 
       let adjTotal = 0;
-      adj.forEach(a => { adjTotal += toNumber(a.amount); });
+      adj.forEach(a => { adjTotal += (Number(a.amount) || 0); });
 
       const costBasis = matTotal + laborTotal + adjTotal;
-      const recommended = (data.recommendedPrice != null && data.recommendedPrice !== "")
-        ? toNumber(data.recommendedPrice)
-        : costBasis;
+      const recommended = Number(data.recommendedPrice) || costBasis;
 
       let html = "";
       html += '<div class="estimate-container">';
 
-      // Header
       html += '  <div class="header-block">';
       html += '    <div class="header-text">';
       html += '      <h1>' + htmlEscape(businessInfo.displayName) + '</h1>';
       html += '      <div class="contact-info">';
-      if (businessInfo.mailingAddress) {
-        html += '        <strong>Mailing:</strong> ' + htmlEscape(businessInfo.mailingAddress) + '<br>';
-      }
+      if (businessInfo.mailingAddress) html += '        <strong>Mailing:</strong> ' + htmlEscape(businessInfo.mailingAddress) + '<br>';
       html += '        <strong>Phone:</strong> ' + htmlEscape(businessInfo.phone) + '<br>';
       html += '        <strong>Email:</strong> ' + htmlEscape(businessInfo.email) + '<br>';
-
       if (businessInfo.website) {
         const siteHref = String(businessInfo.website || "");
         html += '        <strong>Website:</strong> <a href="' + htmlEscape(siteHref) + '" target="_blank" rel="noopener">' + htmlEscape(siteHref) + '</a><br>';
       }
-      if (businessInfo.caSosEntityNumber) {
-        html += '        <strong>CA SOS Entity #:</strong> ' + htmlEscape(businessInfo.caSosEntityNumber) + '<br>';
-      }
-      if (businessInfo.ein) {
-        html += '        <strong>EIN:</strong> ' + htmlEscape(businessInfo.ein) + '<br>';
-      }
+      if (businessInfo.caSosEntityNumber) html += '        <strong>CA SOS Entity #:</strong> ' + htmlEscape(businessInfo.caSosEntityNumber) + '<br>';
+      if (businessInfo.ein) html += '        <strong>EIN:</strong> ' + htmlEscape(businessInfo.ein) + '<br>';
       html += '        <strong>Service Area:</strong> ' + htmlEscape(businessInfo.serviceArea);
       html += '      </div>';
       html += '    </div>';
       html += '    <img src="logoFinal.png" alt="' + htmlEscape(businessInfo.displayName) + ' logo" class="header-logo">';
       html += '  </div>';
 
-      // Client block
       if (custData.name || custData.address || custData.jobSite || custData.phone || custData.email || custData.date) {
         html += '  <div class="client-block">';
         if (custData.name) html += '    <p><strong>Client:</strong> ' + htmlEscape(custData.name) + '</p>';
@@ -623,97 +583,67 @@
         html += '  </div>';
       }
 
-      // Meta row
       if (data.jobId || custData.customerId || custData.date) {
         html += '  <div class="meta-row">';
-        if (data.jobId) {
-          html += '    <span><strong>' + (docType === "invoice" ? "Invoice ID" : "Estimate ID") + ':</strong> ' + htmlEscape(data.jobId) + '</span>';
-        }
-        if (custData.customerId) {
-          html += '    <span><strong>Customer ID:</strong> ' + htmlEscape(custData.customerId) + '</span>';
-        }
-        if (custData.date) {
-          html += '    <span><strong>Date:</strong> ' + htmlEscape(custData.date) + '</span>';
-        }
+        if (data.jobId) html += '    <span><strong>Estimate ID:</strong> ' + htmlEscape(data.jobId) + '</span>';
+        if (custData.customerId) html += '    <span><strong>Customer ID:</strong> ' + htmlEscape(custData.customerId) + '</span>';
+        if (custData.date) html += '    <span><strong>Date:</strong> ' + htmlEscape(custData.date) + '</span>';
         html += '  </div>';
       }
 
-      // Doc type banner + PAST DUE badge
-      html += '  <div class="past-due-wrapper">';
-      html += '    <div class="doc-type-banner ' + docBannerClass + '">' + docLabel.toUpperCase() + '</div>';
-      if (isPastDue) html += '    <div class="past-due-box">PAST DUE</div>';
-      html += '  </div>';
+      html += '  <div class="doc-type-banner ' + docBannerClass + '">' + docLabel.toUpperCase() + '</div>';
 
-      // Title
-      html += '  <h2>' + htmlEscape(data.jobTitle || docLabel) +
-              ' <span class="badge">' + htmlEscape(docLabel) + '</span></h2>';
-
-      if (data.jobCategory) {
-        html += '  <p><strong>Category:</strong> ' + htmlEscape(data.jobCategory) + '</p>';
-      }
+      html += '  <h2>' + htmlEscape(data.jobTitle || docLabel) + ' <span class="badge">' + docLabel + '</span></h2>';
+      if (data.jobCategory) html += '  <p><strong>Category:</strong> ' + htmlEscape(data.jobCategory) + '</p>';
 
       if (data.jobDescription) {
         html += '  <div class="section-title">Job Description</div>';
         html += '  <p>' + htmlEscape(data.jobDescription) + '</p>';
       }
 
-      // Materials
       if (mats.length) {
         html += '  <div class="section-title">Materials</div>';
-        html += '  <table><thead><tr>' +
-                '    <th>Item</th><th>Qty</th>' +
-                '    <th class="number-cell">Unit Cost</th>' +
-                '    <th class="number-cell">Line Total</th>' +
-                '  </tr></thead><tbody>';
+        html += '  <table><thead><tr><th>Item</th><th>Qty</th><th class="number-cell">Unit Cost</th><th class="number-cell">Line Total</th></tr></thead><tbody>';
         mats.forEach(m => {
           html += '<tr>' +
-                  '<td>' + htmlEscape(m.item || "") + '</td>' +
-                  '<td>' + htmlEscape(m.qty ?? "") + '</td>' +
-                  '<td class="number-cell">' + (m.unitCost != null ? currency(m.unitCost) : "") + '</td>' +
-                  '<td class="number-cell">' + (m._lineTotal != null ? currency(m._lineTotal) : "") + '</td>' +
-                  '</tr>';
+            '<td>' + htmlEscape(m.item || "") + '</td>' +
+            '<td>' + htmlEscape(m.qty ?? "") + '</td>' +
+            '<td class="number-cell">' + (m.unitCost != null ? currency(m.unitCost) : "") + '</td>' +
+            '<td class="number-cell">' + (m._lineTotal != null ? currency(m._lineTotal) : "") + '</td>' +
+            '</tr>';
         });
-        html += '  </tbody></table>';
+        html += '</tbody></table>';
         html += '  <p><strong>Materials Subtotal:</strong> ' + currency(matTotal) + '</p>';
       }
 
-      // Labor
       if (labor.length) {
         html += '  <div class="section-title">Labor</div>';
-        html += '  <table><thead><tr>' +
-                '    <th>Task</th><th>Hours</th>' +
-                '    <th class="number-cell">Rate</th>' +
-                '    <th class="number-cell">Line Total</th>' +
-                '  </tr></thead><tbody>';
+        html += '  <table><thead><tr><th>Task</th><th>Hours</th><th class="number-cell">Rate</th><th class="number-cell">Line Total</th></tr></thead><tbody>';
         labor.forEach(l => {
           html += '<tr>' +
-                  '<td>' + htmlEscape(l.task || "") + '</td>' +
-                  '<td>' + htmlEscape(l.hours ?? "") + '</td>' +
-                  '<td class="number-cell">' + (l.rate != null ? currency(l.rate) : "") + '</td>' +
-                  '<td class="number-cell">' + (l._lineTotal != null ? currency(l._lineTotal) : "") + '</td>' +
-                  '</tr>';
+            '<td>' + htmlEscape(l.task || "") + '</td>' +
+            '<td>' + htmlEscape(l.hours ?? "") + '</td>' +
+            '<td class="number-cell">' + (l.rate != null ? currency(l.rate) : "") + '</td>' +
+            '<td class="number-cell">' + (l._lineTotal != null ? currency(l._lineTotal) : "") + '</td>' +
+            '</tr>';
         });
-        html += '  </tbody></table>';
+        html += '</tbody></table>';
         html += '  <p><strong>Labor Subtotal:</strong> ' + currency(laborTotal) + '</p>';
       }
 
-      // Adjustments
       if (adj.length) {
         html += '  <div class="section-title">Flat Adjustments</div>';
-        html += '  <table><thead><tr>' +
-                '    <th>Item</th><th class="number-cell">Amount</th>' +
-                '  </tr></thead><tbody>';
+        html += '  <table><thead><tr><th>Item</th><th class="number-cell">Amount</th></tr></thead><tbody>';
         adj.forEach(a => {
           html += '<tr>' +
-                  '<td>' + htmlEscape(a.label || "") + '</td>' +
-                  '<td class="number-cell">' + (a.amount != null ? currency(a.amount) : "") + '</td>' +
-                  '</tr>';
+            '<td>' + htmlEscape(a.label || "") + '</td>' +
+            '<td class="number-cell">' + (a.amount != null ? currency(a.amount) : "") + '</td>' +
+            '</tr>';
         });
-        html += '  </tbody></table>';
+        html += '</tbody></table>';
         html += '  <p><strong>Adjustments Subtotal:</strong> ' + currency(adjTotal) + '</p>';
       }
 
-      // Totals
       html += '  <div class="section-title">Totals</div>';
       html += '  <table class="totals-table"><tbody>';
       html += '    <tr><td>Materials subtotal</td><td class="number-cell">' + currency(matTotal) + '</td></tr>';
@@ -722,9 +652,7 @@
       html += '    <tr><td><strong>Total</strong></td><td class="number-cell"><strong>' + currency(recommended) + '</strong></td></tr>';
       html += '  </tbody></table>';
 
-      // Signature block
-      const sigToggle = document.getElementById("showSignatureToggle");
-      if (sigToggle && sigToggle.checked) {
+      if (document.getElementById("showSignatureToggle").checked) {
         html += `
           <div id="signatureBlock" style="margin-top:24px;">
             <hr style="margin-bottom:16px;">
@@ -742,31 +670,21 @@
         `;
       }
 
-      // Notes
       if (data.notes) {
         html += '  <div class="section-title">Notes</div>';
         html += '  <div class="notes-box">' + htmlEscape(data.notes) + '</div>';
       }
 
-      // Terms
       html += '  <div class="section-title">Terms &amp; Conditions</div>';
       html += '  <div class="terms-box">';
       html += '    <p>Thank you for choosing Handyman Grant LLC!</p>';
       html += '    <p>Estimate is valid for 14 days from the date issued.</p>';
-      html += '    <p>Pricing applies only to the work and materials listed above.</p>';
-      html += '    <p>Hidden or unforeseen conditions may require additional labor or materials at added cost.</p>';
       html += '    <p>Payment is due upon completion unless otherwise agreed in writing.</p>';
-      html += '    <p>Invoices not paid within 14 days of payment terms may incur a late fee of 5% per 14-day period the balance remains unpaid.</p>';
-      html += '    <p>Labor is warrantied for 30 days. Materials are covered by manufacturer warranties when applicable.</p>';
-      html += '    <p>Customer is responsible for providing access to work areas and functional utilities.</p>';
-      html += '    <p>Permits and related fees are the customer&apos;s responsibility unless otherwise specified.</p>';
-      html += '    <p>Large debris, appliances, or special disposal needs may incur additional fees.</p>';
-      html += '    <p>Cancellation within 24 hours of scheduled work may incur a fee.</p>';
+      html += '    <p>Invoices not paid within 14 days may incur a late fee of 5% per 14-day period unpaid.</p>';
       html += '  </div>';
 
-      html += '</div>'; // estimate-container
+      html += '</div>';
 
-      // --- Job JSON for DB (jobs table) ---
       const jobForDb = {
         jobId: data.jobId || "",
         customerId: custData.customerId || null,
@@ -780,30 +698,23 @@
         jobNotes: data.notes || "",
         jobDate: custData.date || null
       };
+      document.getElementById("jobForDb").value = JSON.stringify(jobForDb, null, 2);
 
-      const jobBox = document.getElementById("jobForDb");
-      if (jobBox) jobBox.value = JSON.stringify(jobForDb, null, 2);
-
-      // --- Materials JSON for DB (jobMaterials table) ---
       const matsForDb = mats.map(m => ({
         jobId: data.jobId || "",
         item: m.item || "",
-        qty: toNumber(m.qty),
-        unitCost: toNumber(m.unitCost),
-        lineTotal: (m._lineTotal != null) ? toNumber(m._lineTotal) : (toNumber(m.qty) * toNumber(m.unitCost))
+        qty: Number(m.qty) || 0,
+        unitCost: Number(m.unitCost) || 0,
+        lineTotal: (m._lineTotal != null) ? m._lineTotal : ((Number(m.qty)||0) * (Number(m.unitCost)||0))
       }));
+      document.getElementById("materialsForDb").value = JSON.stringify(matsForDb.length ? matsForDb : [], null, 2);
 
-      const matsBox = document.getElementById("materialsForDb");
-      if (matsBox) matsBox.value = JSON.stringify(matsForDb.length ? matsForDb : [], null, 2);
-
-      // Render
       preview.innerHTML = html;
     }
 
-    // --- Autosave editor state (localStorage) ---
+    // --- Autosave state ---
     (function () {
       const storageKey = "invoiceEstimateThing_state_v1";
-
       const fields = [
         { key: "estimateJson", elId: "jsonInput", kind: "value" },
         { key: "customerJson", elId: "jsonCustomer", kind: "value" },
@@ -813,10 +724,8 @@
       ];
 
       function readState() {
-        try {
-          const raw = localStorage.getItem(storageKey);
-          return raw ? JSON.parse(raw) : {};
-        } catch (e) { return {}; }
+        try { const raw = localStorage.getItem(storageKey); return raw ? JSON.parse(raw) : {}; }
+        catch (e) { return {}; }
       }
 
       function writeState(state) {
@@ -828,7 +737,6 @@
           const el = document.getElementById(f.elId);
           if (!el) return;
           if (!(f.key in state)) return;
-
           if (f.kind === "checked") el.checked = !!state[f.key];
           else el.value = state[f.key] ?? "";
         });
@@ -839,7 +747,6 @@
         fields.forEach(f => {
           const el = document.getElementById(f.elId);
           if (!el) return;
-
           if (f.kind === "checked") state[f.key] = !!el.checked;
           else state[f.key] = el.value ?? "";
         });
@@ -855,25 +762,26 @@
 
       window.clearAutoSavedDraft = function () {
         localStorage.removeItem(storageKey);
-
-        fields.forEach(f => {
-          const el = document.getElementById(f.elId);
-          if (!el) return;
-
-          if (f.kind === "checked") el.checked = true;
-          else el.value = "";
-        });
-
-        try { renderEstimate(); } catch (e) {}
+        document.getElementById("jsonInput").value = JSON.stringify(defaultEstimate, null, 2);
+        document.getElementById("jsonCustomer").value = JSON.stringify(defaultCustomer, null, 2);
+        document.getElementById("combinedInput").value = "";
+        document.getElementById("docType").value = "estimate";
+        document.getElementById("showSignatureToggle").checked = true;
+        renderEstimate();
       };
 
       document.addEventListener("DOMContentLoaded", () => {
-        applyState(readState());
+        const saved = readState();
+        if (Object.keys(saved).length) {
+          applyState(saved);
+        } else {
+          document.getElementById("jsonInput").value = JSON.stringify(defaultEstimate, null, 2);
+          document.getElementById("jsonCustomer").value = JSON.stringify(defaultCustomer, null, 2);
+        }
 
         fields.forEach(f => {
           const el = document.getElementById(f.elId);
           if (!el) return;
-
           const evt = (f.kind === "checked" || el.tagName === "SELECT") ? "change" : "input";
           el.addEventListener(evt, scheduleSave);
         });
