@@ -202,6 +202,7 @@
     }
     .doc-type-estimate { background: #e5f4ff; color: #085a9b; border: 1px solid #b7d8f5; }
     .doc-type-invoice { background: #fff3cd; color: #856404; border: 1px solid #ffe08a; }
+    .doc-type-receipt { background: #e8f5e9; color: #1b5e20; border: 1px solid #b7dfbd; }
 
     .doc-type-toggle { margin-top: 6px; font-size: 0.85rem; color: #555; }
     .doc-type-toggle label { display: block; margin-bottom: 2px; }
@@ -272,6 +273,7 @@
           <select id="docType">
             <option value="estimate" selected>Estimate</option>
             <option value="invoice">Invoice</option>
+            <option value="receipt">Receipt</option>
           </select>
         </div>
 
@@ -502,8 +504,8 @@
       const preview = document.getElementById("preview");
 
       const docType = document.getElementById("docType")?.value || "estimate";
-      const docLabel = (docType === "invoice" ? "Invoice" : "Estimate");
-      const docBannerClass = (docType === "invoice" ? "doc-type-invoice" : "doc-type-estimate");
+      const docLabel = (docType === "invoice" ? "Invoice" : (docType === "receipt" ? "Receipt" : "Estimate"));
+      const docBannerClass = (docType === "invoice" ? "doc-type-invoice" : (docType === "receipt" ? "doc-type-receipt" : "doc-type-estimate"));
 
       errorBox.textContent = "";
 
@@ -585,7 +587,7 @@
 
       if (data.jobId || custData.customerId || custData.date) {
         html += '  <div class="meta-row">';
-        if (data.jobId) html += '    <span><strong>Estimate ID:</strong> ' + htmlEscape(data.jobId) + '</span>';
+        if (data.jobId) html += '    <span><strong>' + docLabel + ' ID:</strong> ' + htmlEscape(data.jobId) + '</span>';
         if (custData.customerId) html += '    <span><strong>Customer ID:</strong> ' + htmlEscape(custData.customerId) + '</span>';
         if (custData.date) html += '    <span><strong>Date:</strong> ' + htmlEscape(custData.date) + '</span>';
         html += '  </div>';
@@ -678,9 +680,17 @@
       html += '  <div class="section-title">Terms &amp; Conditions</div>';
       html += '  <div class="terms-box">';
       html += '    <p>Thank you for choosing Handyman Grant LLC!</p>';
-      html += '    <p>Estimate is valid for 14 days from the date issued.</p>';
-      html += '    <p>Payment is due upon completion unless otherwise agreed in writing.</p>';
-      html += '    <p>Invoices not paid within 14 days may incur a late fee of 5% per 14-day period unpaid.</p>';
+
+      if (docType === "receipt") {
+        html += '    <p>This receipt confirms payment received for the work and materials listed above.</p>';
+        html += '    <p>Please keep this receipt for your records.</p>';
+        html += '    <p>Labor is warrantied for 30 days. Materials follow manufacturer warranties when applicable.</p>';
+      } else {
+        html += '    <p>Estimate is valid for 14 days from the date issued.</p>';
+        html += '    <p>Payment is due upon completion unless otherwise agreed in writing.</p>';
+        html += '    <p>Invoices not paid within 14 days may incur a late fee of 5% per 14-day period unpaid.</p>';
+      }
+
       html += '  </div>';
 
       html += '</div>';
